@@ -26,7 +26,7 @@ You can create API endpoints by adding files to the `pages/api` directory. These
 
 Example:
 ```javascript
-// pages/api/hello.js
+// app/api/hello.ts
 export default function handler(req, res) {
   res.status(200).json({ text: 'Hello' });
 }
