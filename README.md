@@ -1,3 +1,7 @@
+# Verdant
+
+Verdant is a project aimed at allowing users to find multiple environmental risks in a specific area. By leveraging various data sources and analytical tools, Verdant provides comprehensive insights into environmental hazards, helping users make informed decisions about their surroundings.
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
