@@ -4,6 +4,34 @@ Verdant is a project aimed at allowing users to find multiple environmental risk
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## About Next.js
+
+Next.js(https://nextjs.org) is a full-stack application that can be used to simplify many best practices regarding web development all into one framework.
+
+### File Based Routing
+
+In Next.js, developers are allowed to create routes for their application using the App Router. The App Router is a file-based routing system in Next.js where you define your routes through specific naming conventions of your folders.
+
+Example:
+```javascript
+// app/about/page.tsx
+export default function AboutPage() {
+  return <div>About Us</div>;
+}
+```
+
+### API Endpoints
+
+You can create API endpoints by adding files to the `pages/api` directory. These files will be treated as API routes instead of React pages.
+
+Example:
+```javascript
+// pages/api/hello.js
+export default function handler(req, res) {
+  res.status(200).json({ text: 'Hello' });
+}
+```
+
 ## Getting Started
 
 First, run the development server:
