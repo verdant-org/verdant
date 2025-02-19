@@ -179,7 +179,12 @@ export function Header() {
     }
 
     return (
-        <header className="flex flex-col bg-stone-100 px-4 py-2 gap-2 sticky z-50 top-0">
+        
+      <>
+      {isOpen && (
+        <div className="fixed inset-0 backdrop-blur-lg bg-black bg-opacity-50 z-50"></div>
+      )}
+        <header className={`flex flex-col bg-stone-100 px-4 py-2 gap-2 sticky z-50 top-0 ${isOpen ? "backdrop-blur-lg" : ""} lg:backdrop-blur-none`}>
             <div className="flex items-center justify-between items-center">
                 <div className="flex gap-4 items-center">
                     <button onClick={handleToggle}><Icons.AlignJustify size={24} className="block lg:hidden" /></button>
@@ -214,13 +219,15 @@ export function Header() {
                       animate={{ height: "auto", opacity: 1 }}
                       transition={{ duration: 0.2, ease: "easeInOut" }}
                       exit={{ height: 0, opacity: 0 }}
+                      className="absolute top-full left-0 w-full bg-stone-100 z-50"
                     >
-                      <Dropdown />
+                      <div className="px-4"><Dropdown /></div>
                     </motion.div>
                   )}
               </AnimatePresence>
             </div>
         </header>
+      </>
     )
 }
 
