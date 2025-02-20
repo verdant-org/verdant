@@ -4,7 +4,7 @@ import * as React from "react"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
 import Icons from "@/components/icons"
-import { useUser } from "@clerk/nextjs"
+import { SignedIn, SignedOut } from "@clerk/nextjs"
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -172,7 +172,6 @@ const Dropdown = () => {
 }
 
 export function Header() {
-    const { isSignedIn, isLoaded, user } = useUser()
     const [isOpen, setIsOpen] = React.useState(false)
 
     const handleToggle = () => {
@@ -189,27 +188,27 @@ export function Header() {
             <div className="flex items-center justify-between items-center">
                 <div className="flex gap-4 items-center">
                     <button onClick={handleToggle}><Icons.AlignJustify size={24} className="block lg:hidden" /></button>
-                    <div className="flex gap-2">
-                        <Link href="/"><Icons.House size={32}></Icons.House></Link>
+                    <Link href="/" className="flex gap-2">
+                        <Icons.House size={32}></Icons.House>
                         <div className="font-bold text-2xl">Verdant</div>
-                    </div>
+                    </Link>
                 </div>
                 <div className="hidden lg:block"><NavBar /></div>
                 <div className="flex">
                     <div className="font-bold text-lg flex gap-4">
                         <ModeToggle />
-                        {isSignedIn ? (
+                        <SignedIn>
                             <div className="flex gap-4">
                                 <Link href="/profile" className="">Profile</Link>
                                 <Link href="/dashboard">Dashboard</Link>
                             </div>
-                            ) : (
-                                <div className="flex gap-4 items-center">
-                                    <Link href="/login">Login</Link>
-                                    <Link href="/signup" className="bg-stone-950 transition duration-300 ease-in-out hover:bg-stone-800 text-white py-1 rounded-full px-8 dark:bg-stone-100 dark:text-black dark:hover:bg-stone-300">Register</Link>
-                                </div>
-                            )
-                        }
+                        </SignedIn>
+                        <SignedOut>
+                            <div className="flex gap-4 items-center">
+                                <Link href="/sign-in">Login</Link>
+                                <Link href="/sign-up" className="bg-stone-950 transition duration-300 ease-in-out hover:bg-stone-800 text-white py-1 rounded-full px-8 dark:bg-stone-100 dark:text-black dark:hover:bg-stone-300">Register</Link>
+                            </div>
+                        </SignedOut>
                     </div>
                 </div>
             </div>

@@ -1,29 +1,17 @@
 "use client"
 
-import { faYoutube, faFacebook, faTwitter, faGithub, faDiscord, faLinkedin, faInstagram, faTiktok } from "@fortawesome/free-brands-svg-icons"
+import { faYoutube, faGithub, faDiscord, faLinkedin, faInstagram, faXTwitter } from "@fortawesome/free-brands-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import Link from "next/link"
 import Icons from "@/components/icons"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import {
-    Form,
-    FormControl,
-    FormDescription,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from "@/components/ui/form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
 import React from "react"
 
 const socialIcons = [
     { name: "YouTube", icon: faYoutube, link: "https://www.youtube.com" },
     // { name: "Facebook", icon: faFacebook, link: "https://www.facebook.com" },
-    { name: "Twitter", icon: faTwitter, link: "https://www.twitter.com" },
+    { name: "Twitter", icon: faXTwitter, link: "https://www.twitter.com" },
     { name: "GitHub", icon: faGithub, link: "https://www.github.com" },
     { name: "Discord", icon: faDiscord, link: "https://www.discord.com" },
     { name: "LinkedIn", icon: faLinkedin, link: "https://www.linkedin.com" },
@@ -56,9 +44,9 @@ const NewsletterForm = () => {
 }
 
 const Footer = () => {
+    
     const currentDate = new Date().getFullYear()
     
-
     return (
         <footer className="bg-stone-100 dark:bg-stone-900 flex flex-col p-16">
             {/* Newsletter Section */}
