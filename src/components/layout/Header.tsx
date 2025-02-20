@@ -21,6 +21,7 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible"
 import { AnimatePresence, motion } from "framer-motion"
+import ModeToggle  from "./ModeToggle"
 
 const components: { title: string; href: string; description: string }[] = [
   {
@@ -184,7 +185,7 @@ export function Header() {
       {isOpen && (
         <div className="fixed inset-0 backdrop-blur-lg bg-black bg-opacity-50 z-50"></div>
       )}
-        <header className={`flex flex-col bg-stone-100 px-4 py-2 gap-2 sticky z-50 top-0 ${isOpen ? "backdrop-blur-lg" : ""} lg:backdrop-blur-none`}>
+        <header className={`flex flex-col bg-stone-100 dark:bg-stone-900 px-4 py-2 gap-2 sticky z-50 top-0 ${isOpen ? "backdrop-blur-lg" : ""} lg:backdrop-blur-none`}>
             <div className="flex items-center justify-between items-center">
                 <div className="flex gap-4 items-center">
                     <button onClick={handleToggle}><Icons.AlignJustify size={24} className="block lg:hidden" /></button>
@@ -195,7 +196,8 @@ export function Header() {
                 </div>
                 <div className="hidden lg:block"><NavBar /></div>
                 <div className="flex">
-                    <div className="font-bold text-lg">
+                    <div className="font-bold text-lg flex gap-4">
+                        <ModeToggle />
                         {isSignedIn ? (
                             <div className="flex gap-4">
                                 <Link href="/profile" className="">Profile</Link>
@@ -204,7 +206,7 @@ export function Header() {
                             ) : (
                                 <div className="flex gap-4 items-center">
                                     <Link href="/login">Login</Link>
-                                    <Link href="/signup" className="bg-stone-950 transition duration-300 ease-in-out hover:bg-stone-800 text-white py-1 rounded-full px-8">Register</Link>
+                                    <Link href="/signup" className="bg-stone-950 transition duration-300 ease-in-out hover:bg-stone-800 text-white py-1 rounded-full px-8 dark:bg-stone-100 dark:text-black dark:hover:bg-stone-300">Register</Link>
                                 </div>
                             )
                         }
@@ -219,7 +221,7 @@ export function Header() {
                       animate={{ height: "auto", opacity: 1 }}
                       transition={{ duration: 0.2, ease: "easeInOut" }}
                       exit={{ height: 0, opacity: 0 }}
-                      className="absolute top-full left-0 w-full bg-stone-100 z-50"
+                      className="absolute top-full left-0 w-full bg-stone-100 z-50 dark:bg-stone-900"
                     >
                       <div className="px-4"><Dropdown /></div>
                     </motion.div>

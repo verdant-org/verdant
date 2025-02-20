@@ -3,6 +3,9 @@ import { Geist, Geist_Mono, Inter } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
+import { ThemeProvider } from "@/components/theme-provider";
+
 
 const inter = Inter({
   variable: "--font-inter",
@@ -31,12 +34,18 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html lang="en">
-        <body
-          className={`${inter.variable} ${geistSans.variable} ${geistMono.variable} antialiased`}
-        >
-          <Header />
-          {children}
+      <html lang="en" suppressHydrationWarning>
+        <body className={`${inter.variable} ${geistSans.variable} ${geistMono.variable} antialiased`}>
+          <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <Header />
+              {children}
+              <Footer />
+          </ThemeProvider>
         </body>
       </html>
     </ClerkProvider>
