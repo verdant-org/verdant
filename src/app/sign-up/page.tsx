@@ -165,11 +165,10 @@ function SignUp() {
 										setLoading(true);
 									},
 									onError: (ctx) => {
-										alert(ctx.error.message)
 										toast.error(ctx.error.message);
 									},
 									onSuccess: async () => {
-										router.push("/dashboard");
+										router.push("/");
 									},
 								},
 							});
