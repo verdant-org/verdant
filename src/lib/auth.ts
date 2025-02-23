@@ -13,10 +13,7 @@ export const auth = betterAuth({
     nextCookies()
   ],
   emailAndPassword: {
-    enabled: true,
-    async sendResetPassword(data, request) {
-      // Implement reset later
-    }
+    enabled: true
   },
   socialProviders: {
     google: {
@@ -37,7 +34,7 @@ export const auth = betterAuth({
     },
     microsoft: {
         clientId: process.env.MICROSOFT_CLIENT_ID as string,
-        clientSecret: process.env.MICROSOFT_CLIENT_SECRET as string
+        clientSecret: process.env.MICROSOFT_CLIENT_SECRET as string,
     },
     twitter: {
         clientId: process.env.TWITTER_CLIENT_ID as string,

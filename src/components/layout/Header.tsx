@@ -4,7 +4,6 @@ import * as React from "react"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
 import Icons from "@/components/icons"
-import { SignedIn, SignedOut } from "@clerk/nextjs"
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -22,6 +21,7 @@ import {
 } from "@/components/ui/collapsible"
 import { AnimatePresence, motion } from "framer-motion"
 import ModeToggle  from "./ModeToggle"
+import { useSession } from "@/lib/auth-client";
 
 const components: { title: string; href: string; description: string }[] = [
   {
@@ -173,13 +173,26 @@ const Dropdown = () => {
 
 export function Header() {
     const [isOpen, setIsOpen] = React.useState(false)
+    const {
+      data: session,
+      isPending,
+      error,
+      refetch
+    } = useSession()
 
     const handleToggle = () => {
       setIsOpen(!isOpen)
     }
 
-    return (
-        
+    if (isPending) {
+      return (
+        <div>
+          Loading..
+        </div>
+      )
+    }
+
+    return (   
       <>
       {isOpen && (
         <div className="fixed inset-0 backdrop-blur-lg bg-black bg-opacity-50 z-50"></div>
@@ -197,18 +210,17 @@ export function Header() {
                 <div className="flex">
                     <div className="font-bold text-lg flex gap-4">
                         <ModeToggle />
-                        <SignedIn>
-                            <div className="flex gap-4">
-                                <Link href="/profile" className="">Profile</Link>
-                                <Link href="/dashboard">Dashboard</Link>
-                            </div>
-                        </SignedIn>
-                        <SignedOut>
-                            <div className="flex gap-4 items-center">
-                                <Link href="/sign-in">Login</Link>
-                                <Link href="/sign-up" className="bg-stone-950 transition duration-300 ease-in-out hover:bg-stone-800 text-white py-1 rounded-full px-8 dark:bg-stone-100 dark:text-black dark:hover:bg-stone-300">Register</Link>
-                            </div>
-                        </SignedOut>
+                        {session ? (
+                          <div className="flex gap-4 items-center">
+                              <Link href="/profile" className="">Profile</Link>
+                              <Link href="/dashboard">Dashboard</Link>
+                          </div>
+                        ) : (
+                          <div className="flex gap-4 items-center">
+                              <Link href="/sign-in">Login</Link>
+                              <Link href="/sign-up" className="bg-stone-950 transition duration-300 ease-in-out hover:bg-stone-800 text-white py-1 rounded-full px-8 dark:bg-stone-100 dark:text-black dark:hover:bg-stone-300">Register</Link>
+                          </div>
+                        )}
                     </div>
                 </div>
             </div>
