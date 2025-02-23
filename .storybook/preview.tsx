@@ -1,7 +1,5 @@
 import type { Preview } from "@storybook/react";
 import "../src/app/globals.css"
-import { ClerkProvider } from "@clerk/nextjs";
-import { Geist, Geist_Mono, Inter } from "next/font/google";
 import React from "react";
 
 const preview: Preview = {
@@ -15,9 +13,7 @@ const preview: Preview = {
   },
   decorators: [
     (Story) => (
-      <ClerkProvider>
-            <Story />
-      </ClerkProvider>
+        <Story />
     ),
   ]
 };
