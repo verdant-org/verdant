@@ -1,4 +1,4 @@
-import {AlignJustify, House, ChevronDown, Sun, Moon, Mail } from "lucide-react"
+import {AlignJustify, House, ChevronDown, Sun, Moon, Mail, Loader2, MapPin, Leaf, AlertTriangle, Fish, Cloud, Search } from "lucide-react"
 
 const Icons = {
   AlignJustify,
@@ -6,7 +6,14 @@ const Icons = {
   ChevronDown,
   Sun,
   Moon,
-  Mail
+  Mail,
+  Loader2,
+  MapPin,
+  Leaf,
+  AlertTriangle,
+  Fish,
+  Cloud,
+  Search
 }
 
 export default Icons

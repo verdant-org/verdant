@@ -1,10 +1,10 @@
 "use client"
 
 import * as React from "react"
+import { useEffect } from "react"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
 import Icons from "@/components/icons"
-import { useState, useEffect } from "react"
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -172,32 +172,6 @@ const Dropdown = () => {
     )
 }
 
-interface WindowSize {
-  width: number | undefined;
-  height: number | undefined;
-}
-
-// const useWindowSize = (): WindowSize => {
-//   const [size, setSize] = useState<WindowSize>({
-//     width: undefined,
-//     height: undefined
-//   })
-
-//   useEffect(() => {
-//     function handleResize(): void {
-//       setSize({
-//         width: window.innerWidth,
-//         height: window.innerHeight
-//       })
-//       if (size.width && size.width >= 1024) {}
-//     }
-//     handleResize()
-//     window.addEventListener("resize", handleResize)
-//   }, [])
-
-//   return size
-// }
-
 export function Header() {
     const [isOpen, setIsOpen] = React.useState(false)
     const {
@@ -207,22 +181,16 @@ export function Header() {
       refetch
     } = useSession()
 
-    window.addEventListener("resize", () => {
-      if (window.innerWidth >= 1024 && isOpen) {
-        setIsOpen(false)
-      }
+    useEffect(() => {
+      window.addEventListener("resize", () => {
+        if (window.innerWidth >= 1024 && isOpen) {
+          setIsOpen(false)
+        }
+      })
     })
 
     const handleToggle = () => {
       setIsOpen(!isOpen)
-    }
-
-    if (isPending) {
-      return (
-        <div>
-          Loading..
-        </div>
-      )
     }
 
     return (   
