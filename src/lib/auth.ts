@@ -13,7 +13,7 @@ import {
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { db } from "@/db/drizzle";
 import { nextCookies } from 'better-auth/next-js';
-import * as schema from "@/db/schema"
+import * as schema from "@/db/schemas"
 import { passkey } from "better-auth/plugins/passkey"
 import { resend } from "./email/resend";
 import { reactInvitationEmail } from './email/invitation';
@@ -67,7 +67,7 @@ export const auth = betterAuth({
 		}),
   ],
   emailAndPassword: {
-    enabled: true
+    enabled: true,
   },
   socialProviders: {
     google: {
