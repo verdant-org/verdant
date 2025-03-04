@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
 import Icons from "@/components/icons"
@@ -180,10 +180,21 @@ export function Header() {
       error,
       refetch
     } = useSession()
+    const baseRef = useRef<HTMLDivElement>(null)
+    const dropdownRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
+
       window.addEventListener("resize", () => {
-        if (window.innerWidth >= 1024 && isOpen) {
+        if (isOpen && window.innerWidth >= 1024) {
+          setIsOpen(false)
+        }
+      })
+      window.addEventListener("click", (event) => {
+        let currentHeight = 24
+        currentHeight += baseRef.current ? baseRef.current.getBoundingClientRect().height : 0
+        currentHeight += dropdownRef.current ? dropdownRef.current.getBoundingClientRect().height : 0
+        if (isOpen && event.clientY > currentHeight) {
           setIsOpen(false)
         }
       })
@@ -199,7 +210,7 @@ export function Header() {
         <div className="fixed inset-0 backdrop-blur-lg bg-black bg-opacity-50 z-50"></div>
       )}
         <header className={`flex flex-col bg-stone-100 dark:bg-stone-900 px-4 py-2 gap-2 sticky z-50 top-0 ${isOpen ? "backdrop-blur-lg" : ""} lg:backdrop-blur-none`}>
-            <div className="flex items-center justify-between items-center">
+            <div className="flex items-center justify-between items-center" ref={baseRef}>
                 <div className="flex gap-4 items-center">
                     <button onClick={handleToggle}><Icons.AlignJustify size={24} className="block lg:hidden" /></button>
                     <Link href="/" className="flex gap-2">
@@ -235,7 +246,7 @@ export function Header() {
                       exit={{ height: 0, opacity: 0 }}
                       className="absolute top-full left-0 w-full bg-stone-100 z-50 dark:bg-stone-900"
                     >
-                      <div className="px-4"><Dropdown /></div>
+                      <div className="px-4" ref={dropdownRef}><Dropdown /></div>
                     </motion.div>
                   )}
               </AnimatePresence>
