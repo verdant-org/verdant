@@ -2,7 +2,7 @@ import { pgTable, text, integer, timestamp, real, boolean } from "drizzle-orm/pg
 
 export const county = pgTable("county", {
   // Not sure how we want to handle or do the id, we could do a composite key of state code + county code, or maybe just county code if it is truly unique
-  id: text("id").primaryKey(),
+  stateCountyCode: text("state_county_code").primaryKey(),
   // Datasets might share this info
   stateCode: integer("state_code").notNull(),
   countyCode: integer("county_code").notNull(),
@@ -15,7 +15,7 @@ export const county = pgTable("county", {
 export const pollutionData = pgTable("pollution_data", {
   id: text("id").primaryKey(),
   // I'm assuming that we connect the data to the county with the county id
-  countyId: text("county_id").notNull().references(() => county.id, { onDelete: 'cascade' }),
+  stateCountyCode: text("state_county_code").notNull().references(() => county.stateCountyCode, { onDelete: 'cascade' }),
   dateLocal: timestamp("date_local").notNull(),
 
   // NO2 Data, most relevant seem to be units, mean, or AQI (Air Quality Index)
