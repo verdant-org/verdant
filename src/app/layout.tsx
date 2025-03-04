@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/layout/base/Header";
 import Footer from "@/components/layout/base/Footer";
 import { ThemeProvider } from "@/components/theme-provider";
+import {APIProvider} from "@vis.gl/react-google-maps"
 
 const inter = Inter({
   variable: "--font-inter",
