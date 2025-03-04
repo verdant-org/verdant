@@ -58,7 +58,7 @@ export const hazardData = pgTable("hazard_data", {
   county:text("county").notNull(),
   countytype:text("countytype").notNull(),
   countyfips:text("countyfips").notNull(),
-  stcofips:text("stcofips").notNull(),
+  stcofips:text("stcofips").notNull().references(() => county.stateCountyCode, { onDelete: 'cascade' }),
   tract:text("tract").notNull(),
   tractfips:text("tractfips").notNull(),
   nri_id:text("nri_id").notNull(),
