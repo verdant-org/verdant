@@ -1,26 +1,28 @@
 "use client"
 
-import { useState } from "react"
+import React, { useState } from "react"
 import Icons from "@/components/icons"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import PlaceAutocomplete from "@/components/google/autocomplete"
 import { APIProvider } from "@vis.gl/react-google-maps"
-import { Map }from "@vis.gl/react-google-maps"
+import GoogleMap from "@/components/google/map"
 
 export default function VerdantHomePage() {
   const [searchLocation, setSearchLocation] = useState<google.maps.places.PlaceResult | null>(null)
   const key = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string
+  const [mapTargetLocation, setMapTargetLocation] = useState<{ lat: number; lng: number } | null>(null)
+  const [mapTargetZoom, setMapTargetZoom] = useState<number>(4)
 
-  const [mapCenter, setMapCenter] = useState({ lat: 39.8283, lng: -98.5795})
-  const [mapZoom, setMapZoom] = useState(4)
+
   const handleExploreClick = () => {
-    if (searchLocation && searchLocation.geometry && searchLocation.geometry.location) {
-      setMapCenter({
+    if (searchLocation?.geometry?.location) {
+      const newLocation = {
         lat: searchLocation.geometry.location.lat(),
         lng: searchLocation.geometry.location.lng(),
-      })
-      setMapZoom(13)
+      }
+      setMapTargetLocation(newLocation)
+      setMapTargetZoom(13)
     }
   }
 
@@ -47,18 +49,8 @@ export default function VerdantHomePage() {
 
         <section className="py-20">
           <h2 className="text-4xl font-bold text-center mb-4">Explore Environmental Risks</h2>
-          <div className="h-[400px] w-full">
-            <Map
-              center={mapCenter}
-              zoom={mapZoom}
-              onCameraChanged={(ev) =>{
-                const newCenter = ev.detail.center
-                const newZoom = ev.detail.zoom
-                setMapCenter({ lat: newCenter.lat, lng: newCenter.lng})
-                setMapZoom(newZoom)
-              }}
-            />
-          </div>
+          <GoogleMap newCenter={mapTargetLocation || undefined}
+          newZoom={mapTargetZoom} />
         </section>
         
         <section className="py-20">
