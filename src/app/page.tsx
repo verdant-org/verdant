@@ -6,13 +6,22 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import PlaceAutocomplete from "@/components/google/autocomplete"
 import { APIProvider } from "@vis.gl/react-google-maps"
+import { Map }from "@vis.gl/react-google-maps"
 
 export default function VerdantHomePage() {
   const [searchLocation, setSearchLocation] = useState<google.maps.places.PlaceResult | null>(null)
   const key = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string
 
+  const [mapCenter, setMapCenter] = useState({ lat: 39.8283, lng: -98.5795})
+  const [mapZoom, setMapZoom] = useState(4)
   const handleExploreClick = () => {
-    console.log(searchLocation)
+    if (searchLocation && searchLocation.geometry && searchLocation.geometry.location) {
+      setMapCenter({
+        lat: searchLocation.geometry.location.lat(),
+        lng: searchLocation.geometry.location.lng(),
+      })
+      setMapZoom(13)
+    }
   }
 
   return (
@@ -36,6 +45,22 @@ export default function VerdantHomePage() {
           </div>
         </section>
 
+        <section className="py-20">
+          <h2 className="text-4xl font-bold text-center mb-4">Explore Environmental Risks</h2>
+          <div className="h-[400px] w-full">
+            <Map
+              center={mapCenter}
+              zoom={mapZoom}
+              onCameraChanged={(ev) =>{
+                const newCenter = ev.detail.center
+                const newZoom = ev.detail.zoom
+                setMapCenter({ lat: newCenter.lat, lng: newCenter.lng})
+                setMapZoom(newZoom)
+              }}
+            />
+          </div>
+        </section>
+        
         <section className="py-20">
           <h2 className="text-3xl font-bold text-center mb-12">What Verdant Provides</h2>
           <div className="grid md:grid-cols-3 gap-8">
