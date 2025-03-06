@@ -5,6 +5,7 @@ import Icons from "@/components/icons"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import PlaceAutocomplete from "@/components/google/autocomplete"
+import GoogleMaps from "@/components/google/map"
 import { APIProvider } from "@vis.gl/react-google-maps"
 
 export default function VerdantHomePage() {
@@ -12,7 +13,9 @@ export default function VerdantHomePage() {
   const key = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string
 
   const handleExploreClick = () => {
-    console.log(searchLocation)
+    if (searchLocation?.geometry?.location) {
+      return searchLocation?.geometry?.location
+    } return null
   }
 
   return (
@@ -34,6 +37,7 @@ export default function VerdantHomePage() {
               <Icons.Search className="mr-2 h-4 w-4" /> Explore
             </Button>
           </div>
+          <GoogleMaps place={searchLocation} className="mt-10"/>
         </section>
 
         <section className="py-20">
