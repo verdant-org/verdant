@@ -25,7 +25,6 @@ const socialIcons = [
 const NewsletterForm = () => {
     const [email, setEmail] = React.useState("");
     const [subscribed, setSubscribed] = React.useState(false);
-    const [message, setMessage] = React.useState("");
     
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(e.target.value);
@@ -33,29 +32,20 @@ const NewsletterForm = () => {
     
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setMessage("");
-        const wasSubscribed = subscribed; 
 
-        try {
-            const response = await fetch("http://localhost:3000/api/newsletter", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ email, subscribed: subscribed }),
-                });
-    
-            const data = await response.json();
-            if (!response.ok) throw new Error(data.message || "Error");
-            setSubscribed(!subscribed);
-            setMessage(data.message);
-            if (wasSubscribed) {
-                setEmail(""); 
-            }
+        if (!email) return
 
-        } catch (error: any) {
-            setMessage(error.message);
-        }
+        const response = await fetch("http://localhost:3000/api/newsletter", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ email, subscribed }),
+        });
+
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.message || "Error");
+        setSubscribed(!subscribed);
         
     };
     
