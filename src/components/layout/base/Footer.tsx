@@ -34,25 +34,29 @@ const NewsletterForm = () => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setMessage("");
-    
+        const wasSubscribed = subscribed; 
+
         try {
             const response = await fetch("http://localhost:3000/api/newsletter", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ email, subscribed: !subscribed }),
+                body: JSON.stringify({ email, subscribed: subscribed }),
                 });
     
             const data = await response.json();
             if (!response.ok) throw new Error(data.message || "Error");
-    
             setSubscribed(!subscribed);
             setMessage(data.message);
+            if (wasSubscribed) {
+                setEmail(""); 
+            }
+
         } catch (error: any) {
             setMessage(error.message);
         }
-        setEmail("");
+        
     };
     
 

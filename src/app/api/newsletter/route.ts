@@ -15,10 +15,13 @@ export async function POST(req: Request) {
         }
         if (subscribed) {
             await db.delete(subscribers).where(eq(subscribers.email, email));
+            console.log("UNSUB")
             return NextResponse.json({ message: "unsubscribed" });
         } else {
+            console.log("SUB")
             await db.insert(subscribers).values({ email, subscribed: true }).onConflictDoNothing();
             return NextResponse.json({ message: "subscribed" });
+
         }
     } catch (error) {
         console.error(error);
