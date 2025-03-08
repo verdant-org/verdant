@@ -23,25 +23,44 @@ const socialIcons = [
 
 
 const NewsletterForm = () => {
-    const [email, setEmail] = React.useState("")
-
+    const [email, setEmail] = React.useState("");
+    const [subscribed, setSubscribed] = React.useState(false);
+    
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setEmail(e.target.value)
-    }
+        setEmail(e.target.value);
+    };
+    
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
-        console.log(email)
-        setEmail("")
-    }
+        if (!email) return
+
+        const response = await fetch("http://localhost:3000/api/newsletter", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ email, subscribed }),
+        });
+
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.message || "Error");
+        setSubscribed(!subscribed);
+        
+    };
+    
 
     return (
         <form className="flex gap-4" onSubmit={handleSubmit}>
-            <Input type="email" placeholder="Enter your email" className="w-full lg:w-96" value={email} onChange={handleChange}/>
-            <Button type="submit" className="w-full lg:w-36">Subscribe</Button>
+            {!subscribed && (
+                <Input type="email" placeholder="Enter your email" className="w-full lg:w-96" value={email} onChange={handleChange}/>
+            )}
+            <Button type="submit" className="w-full lg:w-36">
+                {subscribed ? "Unsubscribe" : "Subscribe"}
+            </Button>
         </form>
-    )
-}
+    );
+};
 
 const Footer = () => {
     
