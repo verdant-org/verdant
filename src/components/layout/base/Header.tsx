@@ -2,9 +2,11 @@
 
 import * as React from "react"
 import { useEffect, useRef } from "react"
+import { useState } from "react"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
 import Icons from "@/components/icons"
+import Image from "next/image"
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -23,6 +25,8 @@ import {
 import { AnimatePresence, motion } from "framer-motion"
 import ModeToggle  from "./ModeToggle"
 import { useSession } from "@/lib/auth-client";
+import { AlignJustify, Sheet } from "lucide-react"
+import { SheetTrigger } from "@/components/ui/sheet"
 
 const components: { title: string; href: string; description: string }[] = [
   {
@@ -280,5 +284,106 @@ const ListItem = React.forwardRef<
 })
 ListItem.displayName = "ListItem"
 
+// Simplified and unified header
+export function Header2() {
+  /** track whether profile/dashboard component mounted in browser
+  sign-in/sign-up component mounted by default */
+  const [isMounted, setIsMounted] = useState(false)
 
-export default Header;
+  /** access user authentication state */
+  const { data: session } = useSession()
+
+  /* Update to profile/dashboard compount */
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
+
+  const navItems = [
+    {
+      title: "Map",
+      href: "/map"
+    },
+    {
+      title: "Help",
+      href: "/help"
+    },
+    {
+      title: "About",
+      href: "/about"
+    }
+    // TODO: Add future pages items only if page already exists
+  ]
+
+  return (
+    <header className="sticky top-0 z-50 w-full bg-secondary border-b">
+      <div className="w-full px-4 md:px-6 lg:px-8 flex h-14 items-center justify-between">
+        {/* Logo and Verdant brand name */}
+        <div className="flex gap-4 items-center">
+          <Link href="/" className="flex items-center gap-2">
+            <Image
+              src="/logo.svg"
+              alt="Verdant Logo"
+              width={32}
+              height={32}
+              className="dark:invert"
+            />
+            <span className="font-semibold text-xl">Verdant</span>
+          </Link>
+        </div>
+
+        {/* Navigation (Hidden for now) */}
+        <NavigationMenu className="hidden md:flex">
+          <NavigationMenuList>
+            {navItems.map((item) => (
+              <NavigationMenuItem key={item.title}>
+                <Link href={item.href} legacyBehavior passHref>
+                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                    {item.title}
+                  </NavigationMenuLink>
+                </Link>
+              </NavigationMenuItem>
+            ))}
+          </NavigationMenuList>
+        </NavigationMenu>
+
+        {/* User actions */}
+        <div className="flex items-center gap-4">
+          {isMounted && (
+            <>
+              {session ? (
+                // Show authenticated UI
+                <div className="flex items-center gap-4">
+                  <Link href="/profile" className="text-sm font-medium">
+                    Profile
+                  </Link>
+                  <Link href="/dashboard">
+                    <Button variant="default" size="sm">
+                      Dashboard
+                    </Button>
+                  </Link>
+                </div>
+              ) : (
+                // O.W. show unauthenticated UI
+                <div className="flex items-center gap-4">
+                  <Link href="/sign-in" className="text-sm font-medium">
+                    Sign In
+                  </Link>
+                  <Link href="/sign-up">
+                    <Button variant="default" size="sm">
+                      Register
+                    </Button>
+                  </Link>
+                </div>
+              )}
+            </>
+          )}
+
+          {/* Mobile menu (Hidden for now)*/}
+            {/* TODO */}
+        </div>
+      </div>
+    </header>
+  )
+}
+
+export default Header2;
