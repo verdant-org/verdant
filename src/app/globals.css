@@ -2,12 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  font-family: Arial, Helvetica, sans-serif;
-}
-
 @layer base {
   :root {
+    /* Color variables */
     --background: 0 0% 100%;
     --foreground: 0 0% 3.9%;
     --card: 0 0% 100%;
@@ -32,12 +29,24 @@ body {
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
+
+    /* Spacing variables */
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    --spacing-2xl: 3rem;
+
+    /* Font variables */
     --radius: 0.5rem;
     --primary-font: var(--font-inter);
     --secondary-font: var(--font-geist-sans);
     --mono-font: var(--font-geist-mono);
   }
+
   .dark {
+    /* Dark theme variables */
     --background: 0 0% 3.9%;
     --foreground: 0 0% 98%;
     --card: 0 0% 3.9%;
@@ -63,24 +72,25 @@ body {
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
   }
-}
 
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-}
-
-
-
-@layer base {
+  /* Base styles */
   * {
     @apply border-border outline-ring/50;
   }
-  body {
+
+  body{
     @apply bg-background text-foreground;
+    /* NOTE: Let font variables from layout.tsx control font styling */
+  }
+}
+
+/* Consistent spacing class */
+@layer utilities {
+  .container-padded {
+    @apply container px-4 md:px-6 lg:px-8;
+  }
+
+  .section-spacing {
+    @apply py-8 md:py-12 lg:py-16;
   }
 }
