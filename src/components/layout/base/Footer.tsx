@@ -90,8 +90,8 @@ const Footer = () => {
                     </div>
                     <div>
                         <div className="flex flex-col gap-2 text-base font-bold text-stone-700 dark:text-stone-400">
-                            <Link href="/about">About Us</Link>
-                            <Link href="/contact">Contact Us</Link>
+                            <Link href="/about-us">About Us</Link>
+                            <Link href="/contact-us">Contact Us</Link>
                             <Link href="/opportunities">Opportunities</Link>
                         </div>
                     </div>
@@ -103,23 +103,23 @@ const Footer = () => {
                     <div>
                         <div className="flex flex-col gap-2 text-base font-bold text-stone-700 dark:text-stone-400">
                             <Link href="/faq">Frequently Asked Questions</Link>
-                            <Link href="/help-center">Help Center</Link>
-                            <Link href="/blog">Blog</Link>
+                            <Link href="/guide">Guide</Link>
+                            {/* <Link href="/blog">Blog</Link> */}
                             <Link href="/documentation">Documentation</Link>
                         </div>
                     </div>
                 </div>
                 <div className="flex flex-col gap-6">
                     <div className="flex gap-4 items-center">
-                        <div className="font-bold text-xl">Trust and legal</div>
+                        <div className="font-bold text-xl">Agreements</div>
                     </div>
                     <div>
                         <div className="flex flex-col gap-2 text-base font-bold text-stone-700 dark:text-stone-400">
                             <Link href="/tos">Terms and Conditions</Link>
                             <Link href="/privacy">Privacy Policy</Link>
-                            <Link href="/cookies">Cookies Preferences</Link>
+                            {/* <Link href="/cookies">Cookies Preferences</Link> */}
                             <Link href="/accessibility">Accessibility Statement</Link>
-                            <Link href="/trust">Trust Center</Link>
+                            {/* <Link href="/trust">Trust Center</Link> */}
                         </div>
                     </div>
                 </div>
