@@ -16,7 +16,16 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
-import { Button } from "@/components/ui/button"
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+  SheetClose
+} from "@/components/ui/sheet"
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden"
+import { Button, buttonVariants } from "@/components/ui/button"
 import {
   Collapsible,
   CollapsibleContent,
@@ -25,8 +34,8 @@ import {
 import { AnimatePresence, motion } from "framer-motion"
 import ModeToggle  from "./ModeToggle"
 import { useSession } from "@/lib/auth-client";
-import { AlignJustify, Sheet } from "lucide-react"
-import { SheetTrigger } from "@/components/ui/sheet"
+// import { AlignJustify, Sheet } from "lucide-react"
+// import { SheetTrigger } from "@/components/ui/sheet"
 
 const components: { title: string; href: string; description: string }[] = [
   {
@@ -286,17 +295,116 @@ ListItem.displayName = "ListItem"
 
 // Simplified and unified header
 export function Header2() {
-  /** track whether profile/dashboard component mounted in browser
-  sign-in/sign-up component mounted by default */
+  // Track whether profile/dashboard component mounted in browser. 
+  // Sign-in/sign-up component mounted by default
   const [isMounted, setIsMounted] = useState(false)
 
-  /** access user authentication state */
+  // Tracking whether hamburger menu sheet is open.
+  const [isSheetOpen, setIsSheetOpen] = useState(false)
+
+  // Get authentication status
   const { data: session } = useSession()
 
-  /* Update to profile/dashboard compount */
+  // Update sign-in/register to profile/dashboard and vice versa
   useEffect(() => {
     setIsMounted(true)
   }, [])
+
+  // Updates screen given resizing
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768 && isSheetOpen) {
+        setIsSheetOpen(false)
+      }
+    }
+
+    window.addEventListener("resize", handleResize)
+
+    return () => window.removeEventListener("resize", handleResize)
+  }, [isSheetOpen])
+
+  // Render authentication UI
+  const renderAuthLinks = (variant = "desktop") => {
+    if (!isMounted) return null
+
+    const isMobile = variant === "mobile"
+
+    // Check if authenticated
+    if (session) {
+      const profileLink = (
+        <Link 
+          href="/profile"
+          className={`text-sm font-medium ${isMobile ? "text-lg" : ""}`}
+        >
+          Profile
+        </Link>
+      )
+      
+      const dashboardLink = (
+        <Link href="/dashboard">
+          <Button 
+            variant="default"
+            size={isMobile ? "default" : "sm"}
+          >
+            Dashboard
+          </Button>
+        </Link>
+      )
+
+      return (
+        <div className={`flex items-center gap-4 ${isMobile ? "px-4 py-3" : ""}`}>
+          {isMobile ? (
+            <>
+              <SheetClose asChild>{profileLink}</SheetClose>
+              <SheetClose asChild>{dashboardLink}</SheetClose>
+            </>
+          ) : (
+            <>
+            {profileLink}
+            {dashboardLink}
+            </>
+          )}
+        </div>
+      )
+    }
+
+    // O.W. unauthenticated
+    const signInLink = (
+      <Link 
+        href="/sign-in" 
+        className={`text-sm font-medium ${isMobile ? "text-lg" : ""}`}
+      >
+        Sign In
+      </Link>
+    )
+    
+    const registerLink = (
+      <Link href="/sign-up">
+        <Button 
+          variant="default" 
+          size={isMobile ? "default" : "sm"}
+        >
+          Register
+        </Button>
+      </Link>
+    )
+
+    return (
+      <div className={`flex items-center gap-4 ${isMobile ? "px-4 py-3" : ""}`}>
+        {isMobile ? (
+          <>
+            <SheetClose asChild>{signInLink}</SheetClose>
+            <SheetClose asChild>{registerLink}</SheetClose>
+          </>
+        ) : (
+          <>
+            {signInLink}
+            {registerLink}
+          </>
+        )}
+      </div>
+    )
+  }
 
   const navItems = [
     {
@@ -311,11 +419,11 @@ export function Header2() {
       title: "About",
       href: "/about"
     }
-    // TODO: Add future pages items only if page already exists
+    // Future pages/nav items can be added here
   ]
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-secondary border-b">
+    <header className="top-0 z-50 w-full bg-secondary">
       <div className="w-full px-4 md:px-6 lg:px-8 flex h-14 items-center justify-between">
         {/* Logo and Verdant brand name */}
         <div className="flex gap-4 items-center">
@@ -331,7 +439,7 @@ export function Header2() {
           </Link>
         </div>
 
-        {/* Navigation (Hidden for now) */}
+        {/* Desktop navigation */}
         <NavigationMenu className="hidden md:flex">
           <NavigationMenuList>
             {navItems.map((item) => (
@@ -346,40 +454,49 @@ export function Header2() {
           </NavigationMenuList>
         </NavigationMenu>
 
-        {/* User actions */}
+        {/* User authentication and menu button */}
         <div className="flex items-center gap-4">
-          {isMounted && (
-            <>
-              {session ? (
-                // Show authenticated UI
-                <div className="flex items-center gap-4">
-                  <Link href="/profile" className="text-sm font-medium">
-                    Profile
-                  </Link>
-                  <Link href="/dashboard">
-                    <Button variant="default" size="sm">
-                      Dashboard
-                    </Button>
-                  </Link>
-                </div>
-              ) : (
-                // O.W. show unauthenticated UI
-                <div className="flex items-center gap-4">
-                  <Link href="/sign-in" className="text-sm font-medium">
-                    Sign In
-                  </Link>
-                  <Link href="/sign-up">
-                    <Button variant="default" size="sm">
-                      Register
-                    </Button>
-                  </Link>
-                </div>
-              )}
-            </>
-          )}
+          {renderAuthLinks("desktop")}
 
-          {/* Mobile menu (Hidden for now)*/}
-            {/* TODO */}
+          {/* Hamburger menu */}
+          <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+            <SheetTrigger asChild>
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="md:hidden"
+                aria-label="Open menu"
+              >
+                <Icons.AlignJustify className="h-5 w-5" />
+                <span className="sr-only">Toggle menu</span>
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="right" className="p-0 pt-14 border-t-0 z-50 w-full sm:max-w-sm">
+              <VisuallyHidden>
+                <SheetHeader>
+                  <SheetTitle>Menu</SheetTitle>
+                </SheetHeader>
+                </VisuallyHidden>
+              <div className="flex flex-col pt-6">
+
+                {/* Main navigation items */}
+                {navItems.map((item) => (
+                  <SheetClose asChild key={item.title}>
+                    <Link 
+                      href={item.href}
+                      className="px-4 py-3 text-2xl font-medium hover:bg-accent hover:text-accent-foreground transition-colors"
+                    >
+                      {item.title}
+                    </Link>
+                  </SheetClose>
+                ))}
+
+                <div className="pt-20">
+                  {renderAuthLinks("mobile")}
+                </div>
+              </div>
+            </SheetContent>
+          </Sheet>
         </div>
       </div>
     </header>
