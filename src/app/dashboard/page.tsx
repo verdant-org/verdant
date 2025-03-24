@@ -1,6 +1,6 @@
-import { AppSidebar } from "@/components/app-sidebar"
-import { SiteHeader } from "@/components/site-header"
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
+// import { AppSidebar } from "@/components/app-sidebar"
+// import { SiteHeader } from "@/components/site-header"
+// import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 
 export default function Page() {
   return (
@@ -24,8 +24,8 @@ export default function Page() {
     //     </div>
     //   </SidebarProvider>
     // </div>
-    <div>
-      Look at your old design for the "dashboard"
+    <div className="flex min-h-screen w-full">
+      <div className="text-9xl flex justify-center items-center grow-1 w-full">Dashboard</div>
     </div>
   )
 }

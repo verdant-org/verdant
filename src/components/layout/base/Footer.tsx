@@ -3,10 +3,11 @@
 import { faYoutube, faGithub, faDiscord, faLinkedin, faInstagram, faXTwitter } from "@fortawesome/free-brands-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import Link from "next/link"
-import Icons from "@/components/icons"
+import Image from "next/image"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import React from "react"
+import components from "@/components/layout/base/navigation-items"
 
 const socialIcons = [
     { name: "YouTube", icon: faYoutube, link: "https://www.youtube.com" },
@@ -77,52 +78,28 @@ const Footer = () => {
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-16">
                 <div className="flex flex-col gap-6">
                     <div className="flex gap-4 items-center">
-                        <Icons.House size={36}/>
+                        <Image src="/verdant_logo.png" width={50} height={50} alt="Verdant Logo" className="object-contain"></Image>
                         <div className="font-bold text-2xl lg:text-3xl">Verdant</div>
                     </div>
                     <div className="text-base font-bold text-stone-700 dark:text-stone-400">
                         Verdant is your all in one environmental platform. We provide you with the tools and resources to help you find environmental details for your area.
                     </div>
                 </div>
-                <div className="flex flex-col gap-6">
-                    <div className="flex gap-4 items-center">
-                        <div className="font-bold text-xl">Company</div>
-                    </div>
-                    <div>
-                        <div className="flex flex-col gap-2 text-base font-bold text-stone-700 dark:text-stone-400">
-                            <Link href="/about-us">About Us</Link>
-                            <Link href="/contact-us">Contact Us</Link>
-                            <Link href="/opportunities">Opportunities</Link>
+                {components.map((component) => (
+                    <div className="flex flex-col gap-6" key={`${component.title}-footer`}>
+                        <div className="flex gap-4 items-center">
+                            <div className="font-bold text-xl">{component.title}</div>
+                        </div>
+                        <div>
+                            <div className="flex flex-col gap-2 text-base font-bold text-stone-700 dark:text-stone-400">
+                                <Link href="/#">About Us</Link>
+                                {component.items.map((item) => (
+                                    <Link href={item.href} key={`${item.title}-footer`}>{item.title}</Link>
+                                ))}
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div className="flex flex-col gap-6">
-                    <div className="flex gap-4 items-center">
-                        <div className="font-bold text-xl">Resources</div>
-                    </div>
-                    <div>
-                        <div className="flex flex-col gap-2 text-base font-bold text-stone-700 dark:text-stone-400">
-                            <Link href="/faq">Frequently Asked Questions</Link>
-                            <Link href="/guide">Guide</Link>
-                            {/* <Link href="/blog">Blog</Link> */}
-                            <Link href="/documentation">Documentation</Link>
-                        </div>
-                    </div>
-                </div>
-                <div className="flex flex-col gap-6">
-                    <div className="flex gap-4 items-center">
-                        <div className="font-bold text-xl">Agreements</div>
-                    </div>
-                    <div>
-                        <div className="flex flex-col gap-2 text-base font-bold text-stone-700 dark:text-stone-400">
-                            <Link href="/tos">Terms and Conditions</Link>
-                            <Link href="/privacy">Privacy Policy</Link>
-                            {/* <Link href="/cookies">Cookies Preferences</Link> */}
-                            <Link href="/accessibility">Accessibility Statement</Link>
-                            {/* <Link href="/trust">Trust Center</Link> */}
-                        </div>
-                    </div>
-                </div>
+                ))}
             </div>
             {/* Copyright and Social Media Section */}
             <div className="flex flex-col lg:flex-row lg:gap-0 lg:justify-between lg:items-center gap-4 border-t border-stone-300 dark:border-stone-600 border-solid my-4 pt-4">

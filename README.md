@@ -2,7 +2,7 @@
 # Verdant
 
 <div align="center">
-  <img src="./public/logo.svg" alt="Verdant Logo" width="120" />
+  <img src="./public/verdant_logo.png" alt="Verdant Logo" width="120" />
   <h3>Environmental Risk Mapping Platform</h3>
   <p>Empowering citizens with localized environmental risk awareness</p>
 </div>
@@ -42,7 +42,7 @@ Verdant is a user-friendly environmental risk mapping tool that addresses the la
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/your-organization/verdant.git
+git clone https://github.com/verdant-org/verdant.git
 cd verdant
 ```
 
@@ -55,10 +55,10 @@ yarn install
 
 3. Set up environment variables:
 ```bash
-cp .env.example .env.local
+cp .env.example .env
 ```
 
-4. Edit `.env.local` with your configuration values:
+4. Edit `.env` with your configuration values:
 
 
 
@@ -68,9 +68,16 @@ cp .env.example .env.local
 # Database
 DATABASE_URL=your_postgres_connection_string
 
-# Authentication
-NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
-CLERK_SECRET_KEY=your_clerk_secret_key
+# OAuth Keys
+
+GOOGLE_CLIENT_ID="your-google-client"
+GOOGLE_CLIENT_SECRET="your-google-secret"
+GITHUB_CLIENT_ID="your-github-client"
+GITHUB_CLIENT_SECRET="your-github-secret"
+DISCORD_CLIENT_ID="your-discord-client"
+DISCORD_CLIENT_SECRET="your-discord-secret"
+BETTER_AUTH_SECRET="your-better-auth-secret"
+
 
 # Google Maps
 NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=your_google_maps_api_key
@@ -81,9 +88,9 @@ RESEND_API_KEY=your_resend_api_key
 
 5. Run database migrations:
 ```bash
-npm run db:migrate
+npx drizzle generate
 # or
-yarn db:migrate
+yarn drizzle generate
 ```
 
 6. Start the development server:
@@ -142,16 +149,16 @@ When making changes to the database schema:
 1. Update the schema files in `src/db/schemas/`
 2. Generate a new migration:
 ```bash
-npm run db:generate
+npx drizzle generate
 # or
-yarn db:generate
+yarn drizzle generate
 ```
 
 3. Apply the migration:
 ```bash
-npm run db:migrate
+npx drizzle migrate
 # or
-yarn db:migrate
+yarn drizzle migrate
 ```
 
 ### Storybook
@@ -168,9 +175,8 @@ yarn storybook
 
 The application provides the following API endpoints:
 
-- `GET /api/hello` - Basic health check endpoint
-- `POST /api/auth` - Authentication endpoint
-- `POST /api/newsletter` - Newsletter subscription endpoint
+- `/api/auth` - Authentication Catchall endpoint
+- `/api/newsletter` - Newsletter subscription endpoint
 - Additional endpoints for environmental data (see code for details)
 
 <!-- ## 📊 Environmental Data Sources

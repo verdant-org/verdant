@@ -12,139 +12,102 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
 import { Button } from "@/components/ui/button"
 import {
   Collapsible,
-  CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible"
 import { AnimatePresence, motion } from "framer-motion"
 import ModeToggle  from "./ModeToggle"
 import { useSession } from "@/lib/auth-client";
-
-const companyComponents: {title: string, href: string, description: string}[] = [
-  {
-    title: "About Us",
-    href: "/about-us",
-    description: "Learn more about our website and purpose"
-  },
-  {
-    title: "Contact Us",
-    href: "/contact-us",
-    description: "Reach out to us and find further assistance"
-  },
-  {
-    title: "Opportunities",
-    href: "/opportunities",
-    description: "Find potential collaboration and partnernship opportunities with us"
-  }
-]
-
-const resourceComponents: { title: string; href: string; description: string }[] = [
-  {
-    title: "Frequenty Asked Questions",
-    href: "/faq",
-    description: "Search for frequently asked questions for our website"
-  },
-  {
-    title: "Guide",
-    href: "/guide",
-    description: "Learn how to navigate and use the resources for our website"
-  },
-  {
-    title: "Documentation",
-    href: "/documentation",
-    description: "Find out the technical information and utilities used for our application"
-  },
-]
-
-const agreementComponents: { title: string, href: string, description: string }[] = [
-  {
-    title: "Terms and Conditions",
-    href: "/tos",
-    description: "Read the terms and conditions for using our website"
-  },
-  {
-    title: "Privacy Policy",
-    href: "/privacy",
-    description: "Learn how we handle and protect your personal information"
-  },
-  {
-    title: "Accessibility Statement",
-    href: "/accessibility",
-    description: "Find out how we ensure our website is accessible to everyone"
-  }
-]
+import Image from "next/image"
+import components from "@/components/layout/base/navigation-items"
 
 const NavBar = () => {
     return (
         <NavigationMenu>
             <NavigationMenuList>
-                <NavigationMenuItem>
-                <NavigationMenuTrigger>Company</NavigationMenuTrigger>
+              {components.map((component) => (
+                <NavigationMenuItem key={`${component.title}-header-navbar`}>
+                <NavigationMenuTrigger>{component.title}</NavigationMenuTrigger>
                 <NavigationMenuContent>
                   <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-                    {companyComponents.map((component) => (
+                    {component.items.map((item) => (
                         <ListItem
-                        key={component.title}
-                        title={component.title}
-                        href={component.href}
+                        key={item.title}
+                        title={item.title}
+                        href={item.href}
                         >
-                        {component.description}
+                        {item.description}
                         </ListItem>
                     ))}
                   </ul>
                 </NavigationMenuContent>
                 </NavigationMenuItem>
-                <NavigationMenuItem>
-                <NavigationMenuTrigger>Resource</NavigationMenuTrigger>
-                <NavigationMenuContent>
-                    <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-                    {resourceComponents.map((component) => (
-                        <ListItem
-                        key={component.title}
-                        title={component.title}
-                        href={component.href}
-                        >
-                        {component.description}
-                        </ListItem>
-                    ))}
-                    </ul>
-                </NavigationMenuContent>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                <NavigationMenuTrigger>Agreements</NavigationMenuTrigger>
-                  <NavigationMenuContent>
-                      <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-                      {agreementComponents.map((component) => (
-                          <ListItem
-                          key={component.title}
-                          title={component.title}
-                          href={component.href}
-                          >
-                          {component.description}
-                          </ListItem>
-                      ))}
-                      </ul>
-                  </NavigationMenuContent>
-                </NavigationMenuItem>
+              ))}
             </NavigationMenuList>
         </NavigationMenu>
     )
 }
 
 const Dropdown = () => {
-  const [isOpen, setIsOpen] = React.useState(false)
+  const [openDropDown, setOpenDropDown] = React.useState<{ [key: string]: boolean }>({})
+
+  const handleToggle = (title: string) => {
+    setOpenDropDown((prev) => ({
+      ...prev,
+      [title]: !prev[title]
+    }))
+  }
 
     return (
-      <Collapsible
-        open={isOpen}
-        onOpenChange={setIsOpen}
-        className="w-full space-y-2"
-      >
-        <div className="flex items-center justify-between space-x-4">
+      <>
+        {components.map((component) => (
+          <Collapsible
+            key={`${component.title}-header-dropdown-main`}
+            open={!openDropDown[component.title]}
+            onOpenChange={() => handleToggle(component.title)}
+            className="w-full space-y-2 mb-10 border-b border-b-2 border-stone-300 dark:border-stone-600"
+          >
+            <div className="flex items-center justify-between space-x-4">
+              <h4 className="text-xl font-semibold outline-black">
+                {component.title}
+              </h4>
+              <CollapsibleTrigger asChild>
+                <Button variant="ghost" size="sm" className="w-9 p-0">
+                  <motion.div
+                    animate={{ rotate: openDropDown[component.title] ? 180 : 0}}
+                    transition={{ duration: 0.2, ease: "easeInOut" }}>
+                    <Icons.ChevronDown className="h-4 w-4" />
+                  </motion.div>
+                </Button>
+              </CollapsibleTrigger>
+            </div>
+            <AnimatePresence>
+              {openDropDown[component.title] && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  transition={{ duration: 0.2, ease: "easeInOut" }}
+                  exit={{ opacity: 0, height: 0 }}
+                >
+                {component.items.map((item) => (
+                  <Link href={item.href} key={`${item.title}-header-dropdown-items`}>
+                    <div className="font-bold text-base ">{item.title}</div>
+                    <div className="text-sm">{item.description}</div>
+                  </Link>
+                ))}
+              </motion.div>
+              )}
+            </AnimatePresence>
+          </Collapsible> 
+      ))}
+    </>
+  )
+}
+
+{/* <div className="flex items-center justify-between space-x-4">
           <h4 className="text-xl font-semibold">
             Features
           </h4>
@@ -174,19 +137,11 @@ const Dropdown = () => {
              ))}
           </motion.div>
           )}
-        </AnimatePresence>
-      </Collapsible> 
-    )
-}
+        </AnimatePresence> */}
 
 export function Header() {
     const [isOpen, setIsOpen] = React.useState(false)
-    const {
-      data: session,
-      isPending,
-      error,
-      refetch
-    } = useSession()
+    const { data: session } = useSession()
     const baseRef = useRef<HTMLDivElement>(null)
     const dropdownRef = useRef<HTMLDivElement>(null)
 
@@ -220,15 +175,15 @@ export function Header() {
             <div className="flex items-center justify-between items-center" ref={baseRef}>
                 <div className="flex gap-4 items-center">
                     <button onClick={handleToggle}><Icons.AlignJustify size={24} className="block lg:hidden" /></button>
-                    <Link href="/" className="flex gap-2">
-                        <Icons.House size={32}></Icons.House>
+                    <Link href="/" className="flex gap-2 flex items-center">
+                        <Image src="/verdant_logo.png" width={50} height={50} alt="Verdant Logo" className="object-contain"></Image>
                         <div className="font-bold text-2xl">Verdant</div>
                     </Link>
                 </div>
                 <div className="hidden lg:block"><NavBar /></div>
                 <div className="flex">
                     <div className="font-bold text-lg flex gap-4">
-                        <ModeToggle />
+                        <ModeToggle className="hidden lg:block"/>
                         {session ? (
                           <div className="flex gap-4 items-center">
                               <Link href="/profile" className="">Profile</Link>
@@ -259,6 +214,7 @@ export function Header() {
               </AnimatePresence>
             </div>
         </header>
+        <ModeToggle className="fixed bottom-4 right-4 lg:hidden z-50"/>
       </>
     )
 }

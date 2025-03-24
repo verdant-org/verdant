@@ -451,10 +451,11 @@ function InviteMemberDialog({
 	setOptimisticOrg: (org: ActiveOrganization | null) => void;
 	optimisticOrg: ActiveOrganization | null;
 }) {
-	const [open, setOpen] = useState(false);
+	// const [open, setOpen] = useState(false);
 	const [email, setEmail] = useState("");
 	const [role, setRole] = useState("member");
 	const [loading, setLoading] = useState(false);
+	setLoading(false)
 	return (
 		<Dialog>
 			<DialogTrigger asChild>

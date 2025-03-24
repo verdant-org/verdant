@@ -28,7 +28,7 @@ export default function VerdantHomePage() {
           <p className="text-2xl mb-8 max-w-3xl mx-auto">
             Uncover the environmental story of any location
           </p>
-          <p className="text-xl text-muted-foreground mb-12 max-w-2xl mx-auto">
+          <p className="text-xl mb-12 max-w-2xl mx-auto">
             Get instant access to environmental data, natural disaster risks, and endangered species information for any area.
           </p>
           <div className="flex justify-center gap-4 max-w-md mx-auto">

@@ -21,6 +21,7 @@ export default async function DashboardPage() {
 				headers: await headers(),
 			}),
 		]).catch((e) => {
+			console.error(e);
 			throw redirect("/sign-in");
 		});
 	return (
