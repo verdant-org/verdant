@@ -1,5 +1,4 @@
 import { ComponentListProps, ComponentListGroupProps } from "@/components/types"
-import { Component } from "lucide-react"
 
 export const companyComponents: ComponentListProps[] = [
   {

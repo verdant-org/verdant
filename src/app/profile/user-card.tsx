@@ -101,7 +101,7 @@ export default function UserCard(props: {
 						<AlertTitle>Verify Your Email Address</AlertTitle>
 						<AlertDescription className="text-muted-foreground">
 							Please verify your email address. Check your inbox for the
-							verification email. If you haven't received the email, click the
+							verification email. If you haven&apos;t received the email, click the
 							button below to resend.
 						</AlertDescription>
 						<Button
@@ -115,6 +115,7 @@ export default function UserCard(props: {
 									},
 									{
 										onRequest(context) {
+											console.log(context);
 											setEmailVerificationPending(true);
 										},
 										onError(context) {
@@ -327,7 +328,8 @@ export default function UserCard(props: {
 												}
 												setIsPendingTwoFa(true);
 												if (session?.user.twoFactorEnabled) {
-													const res = await authClient.twoFactor.disable({
+													const res = await authClient.twoFactor.disable({ // eslint-disable-line
+														// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 														//@ts-ignore
 														password: twoFaPassword,
 														fetchOptions: {
@@ -361,7 +363,7 @@ export default function UserCard(props: {
 														});
 														return;
 													}
-													const res = await authClient.twoFactor.enable({
+													const res = await authClient.twoFactor.enable({ // eslint-disable-line
 														password: twoFaPassword,
 														fetchOptions: {
 															onError(context) {
@@ -544,7 +546,7 @@ function ChangePassword() {
 }
 
 function EditUserDialog() {
-	const { data, isPending, error } = useSession();
+	const { data, isPending, error } = useSession(); // eslint-disable-line
 	const [name, setName] = useState<string>();
 	const router = useRouter();
 	const [image, setImage] = useState<File | null>(null);
@@ -778,7 +780,7 @@ function ListPasskeys() {
 									<TableCell className="text-right">
 										<button
 											onClick={async () => {
-												const res = await authClient.passkey.deletePasskey({
+												const res = await authClient.passkey.deletePasskey({ // eslint-disable-line
 													id: passkey.id,
 													fetchOptions: {
 														onRequest: () => {

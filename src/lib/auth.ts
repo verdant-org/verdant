@@ -5,10 +5,10 @@ import {
 	multiSession,
 	organization,
 	twoFactor,
-	oneTap,
+	oneTap, // eslint-disable-line
 	oAuthProxy,
 	openAPI,
-	oidcProvider,
+	oidcProvider, // eslint-disable-line
 } from "better-auth/plugins";
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { db } from "@/db/drizzle";

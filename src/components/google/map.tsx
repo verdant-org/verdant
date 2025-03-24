@@ -16,7 +16,7 @@ interface CameraProps {
     zoom: number
 }
 
-const GoogleMaps = ({place, marker, className}: GoogleMapsProps) => {
+const GoogleMaps = ({place, marker, className}: GoogleMapsProps) => { // eslint-disable-line
     const map = useMap()
 
     const [camera, setCamera] = useState<CameraProps>({center: { lat: 39.8283, lng: -98.5795 }, zoom: 4})

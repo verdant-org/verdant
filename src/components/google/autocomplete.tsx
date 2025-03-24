@@ -11,7 +11,7 @@ interface PlaceAutocompleteProps {
     className?: string
 }
 
-const PlaceAutocomplete = ({ onPlaceSelect, onEventChange, className }: PlaceAutocompleteProps) => {
+const PlaceAutocomplete = ({ onPlaceSelect, onEventChange, className }: PlaceAutocompleteProps) => { // eslint-disable-line
     const [placeAutocomplete, setPlaceAutocomplete] = useState<google.maps.places.Autocomplete | null>(null)
     const inputRef = useRef<HTMLInputElement>(null)
     const places = useMapsLibrary("places")

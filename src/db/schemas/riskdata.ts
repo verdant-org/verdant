@@ -1,4 +1,4 @@
-import { pgTable, text, integer, timestamp, real, boolean, doublePrecision, geometry } from "drizzle-orm/pg-core";
+import { pgTable, text, integer, timestamp, real } from "drizzle-orm/pg-core";
 
 export const county = pgTable("county", {
   // Not sure how we want to handle or do the id, we could do a composite key of state code + county code, or maybe just county code if it is truly unique
