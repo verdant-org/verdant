@@ -1,68 +1,219 @@
+
 # Verdant
 
-Verdant is a project aimed at allowing users to find multiple environmental risks in a specific area. By leveraging various data sources and analytical tools, Verdant provides comprehensive insights into environmental hazards, helping users make informed decisions about their surroundings.
+<div align="center">
+  <img src="./public/logo.svg" alt="Verdant Logo" width="120" />
+  <h3>Environmental Risk Mapping Platform</h3>
+  <p>Empowering citizens with localized environmental risk awareness</p>
+</div>
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## 📋 Overview
 
-## About Next.js
+Verdant is a user-friendly environmental risk mapping tool that addresses the lack of awareness and education about local environmental risks, endangered habitats, and pollutants. The application provides an interactive map interface that allows users to explore environmental data at the county level across the United States.
 
-Next.js(https://nextjs.org) is a full-stack application that can be used to simplify many best practices regarding web development all into one framework.
+### 🌿 Key Features
 
-### File Based Routing
+- **Interactive Map**: Navigate a US map divided by counties with pan and zoom functionality
+- **Environmental Risk Data**: Access location-specific information on environmental hazards, at-risk habitats, and pollutants
+- **Customizable Filters**: Filter environmental risks by category to find specific information
+- **User Accounts**: Save locations and risk information for future reference
+- **Sharing Capabilities**: Share environmental risk information with others
 
-In Next.js, developers are allowed to create routes for their application using the App Router. The App Router is a file-based routing system in Next.js where you define your routes through specific naming conventions of your folders.
+## 🛠️ Tech Stack
 
-Example:
-```javascript
-// app/about/page.tsx
-export default function AboutPage() {
-  return <div>About Us</div>;
-}
+- **Frontend**: Next.js, TypeScript, React, Tailwind CSS, shadcn/ui
+- **Backend**: Next.js API routes
+- **Database**: PostgreSQL with Drizzle ORM and Neon (serverless Postgres)
+- **Authentication**: Clerk Authentication
+- **Mapping**: Google Maps API
+- **Deployment**: Vercel
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js (v18 or later)
+- npm or yarn
+- PostgreSQL database (or Neon account)
+- Google Maps API key
+- Clerk API keys
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/your-organization/verdant.git
+cd verdant
 ```
 
-### API Endpoints
-
-You can create API endpoints by adding files to the `pages/api` directory. These files will be treated as API routes instead of React pages.
-
-Example:
-```javascript
-// app/api/hello.ts
-export default function handler(req, res) {
-  res.status(200).json({ text: 'Hello' });
-}
+2. Install dependencies:
+```bash
+npm install
+# or
+yarn install
 ```
 
-## Getting Started
+3. Set up environment variables:
+```bash
+cp .env.example .env.local
+```
 
-First, run the development server:
+4. Edit `.env.local` with your configuration values:
 
+
+
+
+
+```
+# Database
+DATABASE_URL=your_postgres_connection_string
+
+# Authentication
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
+CLERK_SECRET_KEY=your_clerk_secret_key
+
+# Google Maps
+NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=your_google_maps_api_key
+
+# Email (optional)
+RESEND_API_KEY=your_resend_api_key
+```
+
+5. Run database migrations:
+```bash
+npm run db:migrate
+# or
+yarn db:migrate
+```
+
+6. Start the development server:
 ```bash
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+7. Open [http://localhost:3000](http://localhost:3000) in your browser to view the application.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📁 Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+verdant/
+├── .storybook/            # Storybook configuration
+├── migrations/            # Database migrations
+├── public/                # Static assets
+├── src/
+│   ├── app/               # Next.js app router pages and API routes
+│   │   ├── api/           # Backend API endpoints
+│   │   └── ...            # Frontend pages
+│   ├── components/        # Reusable React components
+│   │   ├── google/        # Google Maps components
+│   │   ├── layout/        # Layout components
+│   │   ├── ui/            # UI components (shadcn/ui)
+│   │   └── ...
+│   ├── config/            # Configuration files
+│   ├── db/                # Database schemas and configuration
+│   ├── hooks/             # Custom React hooks
+│   ├── lib/               # Utility functions and shared code
+│   └── ...
+├── .env.example           # Example environment variables
+├── drizzle.config.ts      # Drizzle ORM configuration
+├── next.config.ts         # Next.js configuration
+├── tailwind.config.ts     # Tailwind CSS configuration
+└── ...
+```
 
-## Learn More
+## 🧑‍💻 Development Workflow
 
-To learn more about Next.js, take a look at the following resources:
+### Code Style
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+This project uses ESLint and TypeScript for code quality. Run the linter with:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npm run lint
+# or
+yarn lint
+```
 
-## Deploy on Vercel
+### Database Migrations
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+When making changes to the database schema:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Update the schema files in `src/db/schemas/`
+2. Generate a new migration:
+```bash
+npm run db:generate
+# or
+yarn db:generate
+```
+
+3. Apply the migration:
+```bash
+npm run db:migrate
+# or
+yarn db:migrate
+```
+
+### Storybook
+
+View and develop UI components in isolation with Storybook:
+
+```bash
+npm run storybook
+# or
+yarn storybook
+```
+
+## 🔄 API Endpoints
+
+The application provides the following API endpoints:
+
+- `GET /api/hello` - Basic health check endpoint
+- `POST /api/auth` - Authentication endpoint
+- `POST /api/newsletter` - Newsletter subscription endpoint
+- Additional endpoints for environmental data (see code for details)
+
+<!-- ## 📊 Environmental Data Sources
+
+TODO: Update with final datasets
+
+Environmental risk data is sourced from:
+- US Fish and Wildlife Service (USFWS)
+- Environmental Protection Agency (EPA)
+- Federal Emergency Management Agency (FEMA) -->
+
+## 📝 Project Status
+
+Current development status based on our sprint backlog:
+
+- ✅ User authentication (creation, login)
+- ✅ Google Maps integration
+- ✅ Basic map navigation (pan/zoom)
+- ✅ News letter subscription service
+- 🚧 Database setup and migrations (in progress)
+- 🚧 Environmental risk data integration (in progress)
+- 🚧 User profile and preferences (in progress)
+- 🚧 Collapsible side panel for filtering results (in progress)
+- 📅 Advanced filtering and data visualization (planned)
+- 📅 Sharing capabilities (planned)
+
+## 👥 Team
+
+Verdant is being developed by Group 6:
+- Carlo Fraley
+- Jason Tolen
+- Preston Hemmy
+- Amogh Allani
+
+<!-- ## 📄 License
+
+
+TODO (OPTIONAL): Add license
+
+This project is licensed under the MIT License - see the LICENSE file for details. -->
+
+---
+
+<div align="center">
+  <p>Verdant - Environmental Protection Through Education</p>
+</div>
