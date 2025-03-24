@@ -11,7 +11,7 @@ import { signIn } from "@/lib/auth-client";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
-export function SignIn() {
+function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false); // eslint-disable-line
@@ -275,7 +275,7 @@ export function SignIn() {
   );
 }
 
-function SignInPage() {
+export default function SignInPage() {
     return  (
         <div className="my-32 flex justify-center">
             <SignIn />
@@ -283,4 +283,3 @@ function SignInPage() {
     )
 }
 
-export default SignInPage
