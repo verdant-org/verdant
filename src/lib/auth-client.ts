@@ -10,9 +10,11 @@ import {
 	genericOAuthClient,
 } from "better-auth/client/plugins";
 import { toast } from "sonner";
+
+const baseURL = window.location.origin!;
  
 export const authClient =  createAuthClient({
-    baseURL: "http://localhost:3000",
+    baseURL,
     plugins: [
 		organizationClient(),
 		twoFactorClient({
