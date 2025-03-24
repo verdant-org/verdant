@@ -18,8 +18,6 @@ import { passkey } from "better-auth/plugins/passkey"
 import { resend } from "./email/resend";
 import { reactInvitationEmail } from './email/invitation';
 
-const baseURL = window.location.origin;
-
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
     provider: "pg",
@@ -46,7 +44,7 @@ export const auth = betterAuth({
 						teamName: data.organization.name,
 						inviteLink:
 							process.env.NODE_ENV === "development"
-								? `${baseURL}/accept-invitation/${data.id}`
+								? `${process.env.BASE_URL}/accept-invitation/${data.id}`
 								: `${
 										process.env.BETTER_AUTH_URL ||
 										"https://demo.better-auth.com"

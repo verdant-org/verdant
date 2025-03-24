@@ -11,10 +11,8 @@ import {
 } from "better-auth/client/plugins";
 import { toast } from "sonner";
 
-const baseURL = window.location.origin!;
- 
 export const authClient =  createAuthClient({
-    baseURL,
+    baseURL: process.env.BASE_URL,
     plugins: [
 		organizationClient(),
 		twoFactorClient({

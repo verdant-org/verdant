@@ -20,8 +20,6 @@ const socialIcons = [
     // { name: "TikTok", icon: faTiktok, link: "https://www.tiktok.com" }
 ]
 
-const baseURL = window.location.origin!;
-
 const NewsletterForm = () => {
     const [email, setEmail] = React.useState("");
     const [subscribed, setSubscribed] = React.useState(false);
@@ -35,7 +33,7 @@ const NewsletterForm = () => {
 
         if (!email) return
 
-        const response = await fetch(`${baseURL}/api/newsletter`, {
+        const response = await fetch(`/api/newsletter`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
