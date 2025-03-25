@@ -68,7 +68,7 @@ const Dropdown = () => {
             key={`${component.title}-header-dropdown-main`}
             open={!openDropDown[component.title]}
             onOpenChange={() => handleToggle(component.title)}
-            className="w-full space-y-2 mb-10 border-b border-b-2 border-stone-300 dark:border-stone-600"
+            className="w-full space-y-2 mb-5 border-b border-b-2 border-stone-300 dark:border-stone-600"
           >
             <div className="flex items-center justify-between space-x-4">
               <h4 className="text-xl font-semibold outline-black">
@@ -93,10 +93,12 @@ const Dropdown = () => {
                   exit={{ opacity: 0, height: 0 }}
                 >
                 {component.items.map((item) => (
-                  <Link href={item.href} key={`${item.title}-header-dropdown-items`}>
-                    <div className="font-bold text-base ">{item.title}</div>
-                    <div className="text-sm">{item.description}</div>
-                  </Link>
+                  <div className="my-4" key={`${item.title}-header-dropdown`}>
+                    <Link href={item.href}>
+                      <div className="font-bold text-base">{item.title}</div>
+                      <div className="text-sm">{item.description}</div>
+                    </Link>
+                  </div>
                 ))}
               </motion.div>
               )}
@@ -106,38 +108,6 @@ const Dropdown = () => {
     </>
   )
 }
-
-{/* <div className="flex items-center justify-between space-x-4">
-          <h4 className="text-xl font-semibold">
-            Features
-          </h4>
-          <CollapsibleTrigger asChild>
-            <Button variant="ghost" size="sm" className="w-9 p-0">
-              <motion.div
-                animate={{ rotate: isOpen ? 180 : 0}}
-                transition={{ duration: 0.2, ease: "easeInOut" }}>
-                <Icons.ChevronDown className="h-4 w-4" />
-              </motion.div>
-            </Button>
-          </CollapsibleTrigger>
-        </div>
-        <AnimatePresence>
-          {isOpen && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              transition={{ duration: 0.2, ease: "easeInOut" }}
-              exit={{ opacity: 0, height: 0 }}
-            >
-             {resourceComponents.map((component) => (
-              <Link href={component.href} key={component.title}>
-                <div className="font-bold text-base">{component.title}</div>
-                <div className="text-sm">{component.description}</div>
-              </Link>
-             ))}
-          </motion.div>
-          )}
-        </AnimatePresence> */}
 
 export function Header() {
     const [isOpen, setIsOpen] = React.useState(false)
