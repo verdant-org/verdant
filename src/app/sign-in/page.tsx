@@ -10,12 +10,16 @@ import { Loader2 } from "lucide-react";
 import { signIn } from "@/lib/auth-client";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { useToast } from "@/hooks/use-toast";
+import { useRouter } from "next/navigation";
 
 function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false); // eslint-disable-line
   const [rememberMe, setRememberMe] = useState(false);
+  const { toast } = useToast();
+  const router = useRouter();
 
   return (
     <Card className="max-w-md">
@@ -79,7 +83,28 @@ function SignIn() {
               className="w-full"
               disabled={loading}
               onClick={async () => {
-                await signIn.email({ email, password, callbackURL: "/" });
+                await signIn.email({ 
+                  email, 
+                  password, 
+                  callbackURL: "/",
+                  fetchOptions: {
+                    onResponse: () => {
+                      setLoading(false);
+                    },
+                    onRequest: () => {
+                      setLoading(true);
+                    },
+                    onError: (ctx) => {
+                      toast({
+                        title: "Sign In Failed",
+                        description: ctx.error.message,
+                      });
+                    },
+                    onSuccess: () => { 
+                      router.push("/");
+                    }
+                  },
+                });
               }}
             >
               {loading ? (

@@ -1,8 +1,13 @@
+"use client"
 // import { AppSidebar } from "@/components/app-sidebar"
 // import { SiteHeader } from "@/components/site-header"
 // import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
+import { useToast } from "@/hooks/use-toast"
+import { Button } from "@/components/ui/button"
 
 export default function Page() {
+  const { toast } = useToast()
+
   return (
     // To Be Determined, Not final design
 

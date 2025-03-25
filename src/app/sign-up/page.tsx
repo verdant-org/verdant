@@ -15,7 +15,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { Loader2, X } from "lucide-react";
 import { signUp } from "@/lib/auth-client";
-import { toast } from "sonner";
+import { useToast } from "@/hooks/use-toast"
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
@@ -28,7 +28,13 @@ function SignUp() {
 	const [image, setImage] = useState<File | null>(null);
 	const [imagePreview, setImagePreview] = useState<string | null>(null);
 	const router = useRouter();
+	const { toast } = useToast();
 	const [loading, setLoading] = useState(false);
+
+	const details = {
+		"Password too short": "Password must be at least 8 characters long",
+		"Invalid email": "Please enter a valid email address",
+	}
 
 	const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const file = e.target.files?.[0];
@@ -151,6 +157,13 @@ function SignUp() {
 						className="w-full"
 						disabled={loading}
 						onClick={async () => {
+							if (password !== passwordConfirmation) {
+								toast({
+									title: "Sign Up Failed",
+									description: "Passwords do not match",
+								});
+								return;
+							}
 							await signUp.email({
 								email,
 								password,
@@ -165,12 +178,15 @@ function SignUp() {
 										setLoading(true);
 									},
 									onError: (ctx) => {
-										toast.error(ctx.error.message);
+										toast({
+										title: "Sign In Failed",
+										description: ctx.error.message,
+										});
 									},
-									onSuccess: async () => {
-										router.push("/");
-									},
-								},
+									onSuccess: () => {
+										router.push("/")
+									}
+								  },
 							});
 						}}
 					>
