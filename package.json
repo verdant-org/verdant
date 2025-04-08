@@ -63,6 +63,7 @@
     "@storybook/nextjs": "^8.5.7",
     "@storybook/react": "^8.5.7",
     "@storybook/test": "^8.5.7",
+    "@types/google.maps": "^3.58.1",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

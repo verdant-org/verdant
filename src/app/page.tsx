@@ -1,25 +1,12 @@
 "use client"
 
-import { useState } from "react"
 import Icons from "@/components/icons"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import PlaceAutocomplete from "@/components/google/autocomplete"
-import GoogleMaps from "@/components/google/map"
-import { APIProvider } from "@vis.gl/react-google-maps"
 
 export default function VerdantHomePage() {
-  const [searchLocation, setSearchLocation] = useState<google.maps.places.PlaceResult | null>(null)
-  const key = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string
-
-  const handleExploreClick = () => {
-    if (searchLocation?.geometry?.location) {
-      return searchLocation?.geometry?.location
-    } return null
-  }
 
   return (
-    <APIProvider apiKey={key}>
       <div className="container mx-auto px-4 py-8">
         <section className="text-center py-20">
           <h1 className="text-5xl font-extrabold tracking-tight mb-4">
@@ -31,13 +18,6 @@ export default function VerdantHomePage() {
           <p className="text-xl mb-12 max-w-2xl mx-auto">
             Get instant access to environmental data, natural disaster risks, and endangered species information for any area.
           </p>
-          <div className="flex justify-center gap-4 max-w-md mx-auto">
-            <PlaceAutocomplete onPlaceSelect={setSearchLocation} className="flex-1"/>
-            <Button type="submit" size="lg" onClick={handleExploreClick}>
-              <Icons.Search className="mr-2 h-4 w-4" /> Explore
-            </Button>
-          </div>
-          <GoogleMaps place={searchLocation} className="mt-10"/>
         </section>
 
         <section className="py-20">
@@ -121,6 +101,5 @@ export default function VerdantHomePage() {
           </div>
         </section>
       </div>
-    </APIProvider>
   )
 }

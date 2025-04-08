@@ -4,9 +4,10 @@ import {
     MapCameraChangedEvent
 } from "@vis.gl/react-google-maps"
 import { useEffect, useState } from "react"
+import geoJSON from "./geojson-counties-fips.json"
 
 interface GoogleMapsProps {
-    place: google.maps.places.PlaceResult | null
+    place: google.maps.places.Place | null
     marker?: google.maps.marker.AdvancedMarkerElement | null
     className?: string
 }
@@ -19,38 +20,48 @@ interface CameraProps {
 const GoogleMaps = ({place, marker, className}: GoogleMapsProps) => { // eslint-disable-line
     const map = useMap()
 
-    const [camera, setCamera] = useState<CameraProps>({center: { lat: 39.8283, lng: -98.5795 }, zoom: 4})
+    map?.data.addGeoJson(geoJSON)
+    map?.data.setStyle({
+        fillColor: "#9febf5",
+        strokeWeight: .4,
+        fillOpacity: 0.36
+    })
 
-    const handleCameraChanged = (e: MapCameraChangedEvent) => {
-        setCamera(e.detail)
-    }
+    map?.data.addListener("click", (e: any) => {
+        const feature = e.feature
+        const fip = feature.getProperty("GEO_ID") as string
+        const formattedFip = fip.substring(fip.lastIndexOf("US") + 2)
+
+        console.log(`You clicked on the county ${feature.getProperty("NAME")} with a FIP of ${formattedFip}`)
+    })
+
+    const [camera, setCamera] = useState<CameraProps>({center: { lat: 39.8283, lng: -98.5795 }, zoom: 4})
 
     useEffect(() => {
         if (!map) return
 
-        if (place?.geometry?.location) {
+        if (place?.location) {
             setCamera({
                 center: {
-                    lat: place.geometry.location.lat(), 
-                    lng: place.geometry.location.lng()
+                    lat: place.location.lat(), 
+                    lng: place.location.lng()
                 }, 
-                zoom: 13
+                zoom: 6
             })
         }
-
-        if (place?.geometry?.viewport) {
-            map.fitBounds(place.geometry?.viewport)
+        if (place?.viewport) {
+            map.fitBounds(place.viewport)
         }
     }, [map, place])
 
     return (
         <Map
-            mapId={'61d02bfb9df84225'}
+            // mapId={'61d02bfb9df84225'}
             defaultZoom={camera.zoom}
             defaultCenter={camera.center}
-            onCameraChanged={handleCameraChanged}
-            gestureHandling={'greedy'}
-            className={`w-75 h-[600px] ${className ? className : ""}`}
+            gestureHandling={'cooperative'}
+
+            className={` ${className ? className : ""}`}
         />
     )
 }
