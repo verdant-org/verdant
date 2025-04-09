@@ -1,10 +1,12 @@
 import {
     useMap,
+    useMapsLibrary,
     Map,
     MapCameraChangedEvent
 } from "@vis.gl/react-google-maps"
 import { useEffect, useState } from "react"
 import geoJSON from "./geojson-counties-fips.json"
+import LoadingScreen from "@/components/layout/accessory/LoadingScreen"
 
 interface GoogleMapsProps {
     place: google.maps.places.Place | null
@@ -19,6 +21,9 @@ interface CameraProps {
 
 const GoogleMaps = ({place, marker, className}: GoogleMapsProps) => { // eslint-disable-line
     const map = useMap()
+    const geocode = useMapsLibrary("geocoding") as google.maps.GeocodingLibrary
+    const [geoCodingService, setGeoCodingService] = useState<google.maps.Geocoder | null>(null)
+    const [isLoading, setIsLoading] = useState(false)
 
     map?.data.addGeoJson(geoJSON)
     map?.data.setStyle({
@@ -27,12 +32,44 @@ const GoogleMaps = ({place, marker, className}: GoogleMapsProps) => { // eslint-
         fillOpacity: 0.36
     })
 
-    map?.data.addListener("click", (e: any) => {
+    map?.data.addListener("click", async (e: any) => {
+
+        setIsLoading(true)
+
         const feature = e.feature
         const fip = feature.getProperty("GEO_ID") as string
         const formattedFip = fip.substring(fip.lastIndexOf("US") + 2)
 
-        console.log(`You clicked on the county ${feature.getProperty("NAME")} with a FIP of ${formattedFip}`)
+        const response = await fetch("/api/dataset/hazard", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ fip_code: formattedFip })
+        })
+        const data = await response.json()
+
+        // Geocode for the center of the map
+
+        const { countyName, stateNameAbbreviation } = data
+
+        const geocodedLocation = `${countyName} County ${stateNameAbbreviation}`
+    
+        if (!geoCodingService) {
+            setGeoCodingService(new google.maps.Geocoder())
+        }
+        
+        await geoCodingService?.geocode({ address: geocodedLocation }, (results, status) => {
+            if (status === google.maps.GeocoderStatus.OK && results) {
+                const location = results[0].geometry.location
+                map.setCenter(location)
+                map.setZoom(8)
+            } else {
+                console.error("Geocode was not successful for the following reason: " + status)
+            }
+        })
+
+        setIsLoading(false)
     })
 
     const [camera, setCamera] = useState<CameraProps>({center: { lat: 39.8283, lng: -98.5795 }, zoom: 4})
@@ -54,16 +91,24 @@ const GoogleMaps = ({place, marker, className}: GoogleMapsProps) => { // eslint-
         }
     }, [map, place])
 
-    return (
-        <Map
-            // mapId={'61d02bfb9df84225'}
-            defaultZoom={camera.zoom}
-            defaultCenter={camera.center}
-            gestureHandling={'cooperative'}
 
-            className={` ${className ? className : ""}`}
-        />
-    )
+    return (
+        <div className="relative w-full h-full">
+            <Map
+                // mapId={'61d02bfb9df84225'}
+                defaultZoom={camera.zoom}
+                defaultCenter={camera.center}
+                gestureHandling={'cooperative'}
+                className={`${className ? className : ""}`}
+            />
+    
+            {isLoading && (
+                <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[9999]">
+                    <LoadingScreen />
+                </div>
+            )}
+        </div>
+    );
 }
 
 export default GoogleMaps
