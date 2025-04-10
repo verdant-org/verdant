@@ -8,7 +8,7 @@ export const companyComponents: ComponentListProps[] = [
   },
   {
     title: "Contact Us",
-    href: "/#",
+    href: "/contact",
     description: "Reach out to us and find further assistance"
   },
   {
