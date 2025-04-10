@@ -3,7 +3,7 @@ import { ComponentListProps, ComponentListGroupProps } from "@/components/types"
 export const companyComponents: ComponentListProps[] = [
   {
     title: "About Us",
-    href: "/#",
+    href: "/about",
     description: "Learn more about our website and purpose"
   },
   {
