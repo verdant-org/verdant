@@ -13,134 +13,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import Link from "next/link"
-import { RiskChartDataProps, RiskOverviewProps, RiskTypesProps } from "@/components/types"
 import RiskPage from "./riskPage"
+import LossPage from "./lossPage"
+import Link from "next/link"
 
 export default function Page() {
   const [searchLocation, setSearchLocation] = useState<google.maps.places.Place | null>(null)
   const [countyData, setCountyData] = useState<typeof hazard.$inferSelect | null>(null)
   const [selectedOption, setSelectedOption] = useState<string>("risk_index")
   const key = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string
-
-  const riskChartData: RiskChartDataProps[] = [
-    { 
-      name: "National Percentile",
-      value: Number(countyData?.nationalRiskIndexScoreComposite?.toFixed(2)) || 0,
-    },
-    {
-      name: `Percentile Within ${countyData?.stateName}`,
-      value: Number(countyData?.nationalRiskIndexStatePercentileComposite?.toFixed(2)) || 0,
-    }
-  ]
-
-  const riskOverviews: RiskOverviewProps[] = [
-    {
-      name: "Expected Annual Loss",
-      value: countyData?.expectedAnnualLossRatingComposite,
-    },
-    {
-      name: "Social Vulnerability",
-      value: countyData?.socialVulnerabilityRating,
-    },
-    {
-      name: "Community Resilience",
-      value: countyData?.communityResilienceRating,
-    }
-  ]
-
-  const riskTypes: RiskTypesProps[] = [
-    {
-      name: "Alavanche",
-      rating: countyData?.avalancheExpectedAnnualLossRating,
-      score: countyData?.avalancheExpectedAnnualLossScore,
-    },
-    {
-      name: "Coastal Flooding",
-      rating: countyData?.coastalFloodingExpectedAnnualLossRating,
-      score: countyData?.coastalFloodingExpectedAnnualLossScore,
-    },
-    {
-      name: "Cold Wave",
-      rating: countyData?.coldWaveExpectedAnnualLossRating,
-      score: countyData?.coldWaveExpectedAnnualLossScore,
-    },
-    {
-      name: "Drought",
-      rating: countyData?.droughtExpectedAnnualLossRating,
-      score: countyData?.droughtExpectedAnnualLossScore,
-    },
-    {
-      name: "Earthquake",
-      rating: countyData?.earthquakeExpectedAnnualLossRating,
-      score: countyData?.earthquakeExpectedAnnualLossScore,
-    },
-    {
-      name: "Hail",
-      rating: countyData?.hailExpectedAnnualLossRating,
-      score: countyData?.hailExpectedAnnualLossScore,
-    },
-    {
-      name: "Heat Wave",
-      rating: countyData?.heatWaveExpectedAnnualLossRating,
-      score: countyData?.heatWaveExpectedAnnualLossScore,
-    },
-    {
-      name: "Hurricane",
-      rating: countyData?.hurricaneExpectedAnnualLossRating,
-      score: countyData?.hurricaneExpectedAnnualLossScore,
-    },
-    {
-      name: "Ice Storm",
-      rating: countyData?.iceStormExpectedAnnualLossRating,
-      score: countyData?.iceStormExpectedAnnualLossScore,
-    },
-    {
-      name: "Landslide",
-      rating: countyData?.landslideExpectedAnnualLossRating,
-      score: countyData?.landslideExpectedAnnualLossScore,
-    },
-    {
-      name: "Lignhtning",
-      rating: countyData?.lightningExpectedAnnualLossRating,
-      score: countyData?.lightningExpectedAnnualLossScore,
-    },
-    {
-      name: "Riverine Flooding",
-      rating: countyData?.riverineFloodingExpectedAnnualLossRating,
-      score: countyData?.riverineFloodingExpectedAnnualLossScore,
-    },
-    {
-      name: "Strong Wind",
-      rating: countyData?.strongWindExpectedAnnualLossRating,
-      score: countyData?.strongWindExpectedAnnualLossScore,
-    },
-    {
-      name: "Tornado",
-      rating: countyData?.tornadoExpectedAnnualLossRating,
-      score: countyData?.tornadoExpectedAnnualLossScore,
-    },
-    {
-      name: "Tsunami",
-      rating: countyData?.tsunamiExpectedAnnualLossRating,
-      score: countyData?.tsunamiExpectedAnnualLossScore,
-    },
-    {
-      name: "Volcanic Alctivity",
-      rating: countyData?.volcanicActivityExpectedAnnualLossRating,
-      score: countyData?.volcanicActivityExpectedAnnualLossScore,
-    },
-    {
-      name: "Wildfire",
-      rating: countyData?.wildfireExpectedAnnualLossRating,
-      score: countyData?.wildfireExpectedAnnualLossScore,
-    },
-    {
-      name: "Winter Weather",
-      rating: countyData?.winterWeatherExpectedAnnualLossRating,
-      score: countyData?.winterWeatherExpectedAnnualLossScore,
-    }
-  ]
   
   return (
     <APIProvider apiKey={key}>
@@ -177,15 +58,12 @@ export default function Page() {
                     </SelectContent>
                   </Select>
               </div>
-              {selectedOption === "risk_index" && (
-                <RiskPage
-                  countyData={countyData}
-                  riskChartData={riskChartData}
-                  riskOverviews={riskOverviews}
-                  riskTypes={riskTypes}
-                />
-              )}
-
+              {selectedOption === "risk_index" && <RiskPage countyData={countyData}/>}
+              {selectedOption === "expected_annual_loss" && <LossPage countyData={countyData}/>}
+              <div className="flex flex-col gap-4 w-full pb-4 border-b-2">
+                <div className="">Do you want to reduce your risk?</div>
+                <Link href="https://hazards.fema.gov/nri/take-action" className="font-bold underline" target="_blank">Learn how to take action</Link>
+              </div>
             </div>
           )}
         </div>
