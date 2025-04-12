@@ -10,6 +10,6 @@ export async function POST(request: NextRequest) {
     const countyData = await db.query.hazard.findFirst({
         where: eq(hazard.stateCountyFipsCode, data.fip_code),
     })
-
+    
     return NextResponse.json(countyData)
 }

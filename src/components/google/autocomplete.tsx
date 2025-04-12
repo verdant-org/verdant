@@ -12,7 +12,10 @@ export const PlaceAutocomplete = ({onPlaceSelect, className}: Props) => {
   const places = useMapsLibrary('places');
 
   const [inputValue, setInputValue] = useState<string>('');
-  const {suggestions, resetSession} = useAutocompleteSuggestions(inputValue);
+  const {suggestions, resetSession} = useAutocompleteSuggestions(inputValue, {
+    includedPrimaryTypes: ['administrative_area_level_2'],
+
+  });
 
   const handleInput = useCallback((event: FormEvent<HTMLInputElement>) => {
     console.log((event.target as HTMLInputElement).value)
@@ -52,11 +55,11 @@ export const PlaceAutocomplete = ({onPlaceSelect, className}: Props) => {
         value={inputValue}
         onInput={event => handleInput(event)}
         placeholder="Enter a County"
-        className={`w-full${className ? className : ""} `}
+        className={`w-full ${className ? className : ""} `}
       />
 
       {suggestions.length > 0 && (
-        <ul className="bg-secondary p-2 rounded-lg mt-8">
+        <ul className="bg-background p-2 rounded-lg mt-8">
           {suggestions.map((suggestion, index) => {
             return (
               <li

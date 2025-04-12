@@ -92,7 +92,6 @@ const Footer = () => {
                         </div>
                         <div>
                             <div className="flex flex-col gap-2 text-base font-bold text-stone-700 dark:text-stone-400">
-                                <Link href="/#">About Us</Link>
                                 {component.items.map((item) => (
                                     <Link href={item.href} key={`${item.title}-footer`}>{item.title}</Link>
                                 ))}

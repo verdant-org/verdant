@@ -4,24 +4,24 @@ import {
     Map,
     MapCameraChangedEvent
 } from "@vis.gl/react-google-maps"
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import geoJSON from "./geojson-counties-fips.json"
 import LoadingScreen from "@/components/layout/accessory/LoadingScreen"
+import { hazard } from "@/db/schemas"
 
 interface GoogleMapsProps {
     place: google.maps.places.Place | null
-    marker?: google.maps.marker.AdvancedMarkerElement | null
+    setCountyData?: React.Dispatch<React.SetStateAction<typeof hazard.$inferSelect | null>>
     className?: string
 }
 
 interface CameraProps {
     center: {lat: number, lng: number}
-    zoom: number
+    zoom?: number
 }
 
-const GoogleMaps = ({place, marker, className}: GoogleMapsProps) => { // eslint-disable-line
+const GoogleMaps = ({place, setCountyData, className}: GoogleMapsProps) => { // eslint-disable-line
     const map = useMap()
-    const geocode = useMapsLibrary("geocoding") as google.maps.GeocodingLibrary
     const [geoCodingService, setGeoCodingService] = useState<google.maps.Geocoder | null>(null)
     const [isLoading, setIsLoading] = useState(false)
 
@@ -33,7 +33,6 @@ const GoogleMaps = ({place, marker, className}: GoogleMapsProps) => { // eslint-
     })
 
     map?.data.addListener("click", async (e: any) => {
-
         setIsLoading(true)
 
         const feature = e.feature
@@ -47,9 +46,11 @@ const GoogleMaps = ({place, marker, className}: GoogleMapsProps) => { // eslint-
             },
             body: JSON.stringify({ fip_code: formattedFip })
         })
-        const data = await response.json()
-
-        // Geocode for the center of the map
+        const data = await response.json() 
+    
+        if (setCountyData) {
+            setCountyData(data)
+        }
 
         const { countyName, stateNameAbbreviation } = data
 
@@ -68,13 +69,13 @@ const GoogleMaps = ({place, marker, className}: GoogleMapsProps) => { // eslint-
                 console.error("Geocode was not successful for the following reason: " + status)
             }
         })
-
         setIsLoading(false)
     })
 
     const [camera, setCamera] = useState<CameraProps>({center: { lat: 39.8283, lng: -98.5795 }, zoom: 4})
 
     useEffect(() => {
+        setIsLoading(true)
         if (!map) return
 
         if (place?.location) {
@@ -83,12 +84,13 @@ const GoogleMaps = ({place, marker, className}: GoogleMapsProps) => { // eslint-
                     lat: place.location.lat(), 
                     lng: place.location.lng()
                 }, 
-                zoom: 6
+                
             })
         }
         if (place?.viewport) {
             map.fitBounds(place.viewport)
         }
+        setIsLoading(false)
     }, [map, place])
 
 
@@ -103,7 +105,7 @@ const GoogleMaps = ({place, marker, className}: GoogleMapsProps) => { // eslint-
             />
     
             {isLoading && (
-                <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[9999]">
+                <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[40]">
                     <LoadingScreen />
                 </div>
             )}
