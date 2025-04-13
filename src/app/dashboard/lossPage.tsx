@@ -11,11 +11,12 @@ import {
 import { hazard } from "@/db/schemas"
 import Link from "next/link";
 import { useTheme } from "next-themes";
+import { baseTypes } from "./baseTypes"
+
 
 interface LossPageProps {
   countyData: typeof hazard.$inferSelect
 }
-
 
 function numberWithCommas(x: string) {
     if (x === null || x === undefined) return "0";
@@ -144,173 +145,26 @@ export default function LossPage({countyData}: LossPageProps) {
         }
     ]
 
-    const lossTypes = [
-        {
-            name: "Avalanche",
-            rating: countyData?.avalancheExpectedAnnualLossRating,
-            score: countyData?.avalancheExpectedAnnualLossScore,
-            exposure: formatNumber(countyData?.avalancheExposureTotal),
-            frequency: formatNumber(countyData?.avalancheAnnualizedFrequency, 2) + " events per year",
-            loss: formatNumber(countyData?.avalancheExpectedAnnualLossScore),
-            history: countyData?.avalancheHistoricLossRatioTotalRating,
-        },
-        {
-            name: "Coastal Flooding",
-            rating: countyData?.coastalFloodingExpectedAnnualLossRating,
-            score: countyData?.coastalFloodingExpectedAnnualLossScore,
-            exposure: formatNumber(countyData?.coastalFloodingExposureTotal, 1),
-            frequency: formatNumber(countyData?.coastalFloodingAnnualizedFrequency) + " events per year",
-            loss: countyData?.coastalFloodingExpectedAnnualLossTotal,
-            history: countyData?.coastalFloodingHistoricLossRatioTotalRating,
-        },
-        {
-            name: "Cold Wave",
-            rating: countyData?.coldWaveExpectedAnnualLossRating,
-            score: countyData?.coldWaveExpectedAnnualLossScore,
-            exposure: formatNumber(countyData?.coldWaveExposureTotal),
-            frequency: formatNumber(countyData?.coldWaveAnnualizedFrequency, 1) + " events per year",
-            loss: "$" + formatNumber(countyData?.coldWaveExpectedAnnualLossTotal),
-            history: countyData?.coldWaveHistoricLossRatioTotalRating,
-        },
-        {
-            name: "Drought",
-            rating: countyData?.droughtExpectedAnnualLossRating,
-            score: countyData?.droughtExpectedAnnualLossScore,
-            exposure: "$" + formatNumber(countyData?.droughtExposureTotal),
-            frequency: formatNumber(countyData?.droughtAnnualizedFrequency, 1) + " events per year",
-            loss: "$" + formatNumber(countyData?.droughtExpectedAnnualLossTotal),
-            history: countyData?.droughtHistoricLossRatioTotalRating,
-        },
-        {
-            name: "Earthquake",
-            rating: countyData?.earthquakeExpectedAnnualLossRating,
-            score: countyData?.earthquakeExpectedAnnualLossScore,
-            exposure: "$" + formatNumber(countyData?.earthquakeExposureTotal),
-            frequency: formatNumber(countyData?.earthquakeAnnualizedFrequency ? countyData?.earthquakeAnnualizedFrequency * 100 : 0, 3) + "% chance per year",
-            loss: "$" + formatNumber(countyData?.earthquakeExpectedAnnualLossTotal),
-            history: countyData?.earthquakeHistoricLossRatioTotalRating,
-        },
-        {
-            name: "Hail",
-            rating: countyData?.hailExpectedAnnualLossRating,
-            score: countyData?.hailExpectedAnnualLossScore,
-            exposure: "$" + formatNumber(countyData?.hailExposureTotal),
-            frequency: formatNumber(countyData?.hailAnnualizedFrequency, 1) + " events per year",
-            loss: "$" + formatNumber(countyData?.hailExpectedAnnualLossTotal),
-            history: countyData?.hailHistoricLossRatioTotalRating,
-        },
-        {
-            name: "Heat Wave",
-            rating: countyData?.heatWaveExpectedAnnualLossRating,
-            score: countyData?.heatWaveExpectedAnnualLossScore,
-            exposure: "$" + formatNumber(countyData?.heatWaveExposureTotal),
-            frequency: formatNumber(countyData?.heatWaveAnnualizedFrequency, 1) + " events per year",
-            loss: "$" + formatNumber(countyData?.heatWaveExpectedAnnualLossTotal),
-            history: countyData?.heatWaveHistoricLossRatioTotalRating,
-        },
-        {
-            name: "Hurricane",
-            rating: countyData?.hurricaneExpectedAnnualLossRating,
-            score: countyData?.hurricaneExpectedAnnualLossScore,
-            exposure: "$" + formatNumber(countyData?.hurricaneExposureTotal),
-            frequency: formatNumber(countyData?.hurricaneAnnualizedFrequency, 1) + " events per year",
-            loss: "$" + formatNumber(countyData?.hurricaneExpectedAnnualLossTotal),
-            history: countyData?.hurricaneHistoricLossRatioTotalRating,
-        },
-        {
-            name: "Ice Storm",
-            rating: countyData?.iceStormExpectedAnnualLossRating,
-            score: countyData?.iceStormExpectedAnnualLossScore,
-            exposure: "$" + formatNumber(countyData?.iceStormExposureTotal),
-            frequency: formatNumber(countyData?.iceStormAnnualizedFrequency, 1) + " events per year",
-            loss: "$" + formatNumber(countyData?.iceStormExpectedAnnualLossTotal),
-            history: countyData?.iceStormHistoricLossRatioTotalRating,
-        },
-        {
-            name: "Landslide",
-            rating: countyData?.landslideExpectedAnnualLossRating,
-            score: countyData?.landslideExpectedAnnualLossScore,
-            exposure: "$" + formatNumber(countyData?.landslideExposureTotal),
-            frequency: formatNumber(countyData?.landslideAnnualizedFrequency, 1) + " events per year",
-            loss: "$" + formatNumber(countyData?.landslideExpectedAnnualLossTotal),
-            history: countyData?.landslideHistoricLossRatioTotalRating,
-        },
-        {
-            name: "Lightning",
-            rating: countyData?.lightningExpectedAnnualLossRating,
-            score: countyData?.lightningExpectedAnnualLossScore,
-            exposure: "$" + formatNumber(countyData?.lightningExposureTotal),
-            frequency: formatNumber(countyData?.lightningAnnualizedFrequency, 1) + " events per year",
-            loss: "$" + formatNumber(countyData?.lightningExpectedAnnualLossTotal),
-            history: countyData?.lightningHistoricLossRatioTotalRating,
-        },
-        {
-            name: "Riverine Flooding",
-            rating: countyData?.riverineFloodingExpectedAnnualLossRating,
-            score: countyData?.riverineFloodingExpectedAnnualLossScore,
-            exposure: "$" + formatNumber(countyData?.riverineFloodingExposureTotal),
-            frequency: formatNumber(countyData?.riverineFloodingAnnualizedFrequency, 1) + " events per year",
-            loss: "$" + formatNumber(countyData?.riverineFloodingExpectedAnnualLossTotal),
-            history: countyData?.riverineFloodingHistoricLossRatioTotalRating,
-        },
-        {
-            name: "Strong Wind",
-            rating: countyData?.strongWindExpectedAnnualLossRating,
-            score: countyData?.strongWindExpectedAnnualLossScore,
-            exposure: "$" + formatNumber(countyData?.strongWindExposureTotal),
-            frequency: formatNumber(countyData?.strongWindAnnualizedFrequency, 1) + " events per year",
-            loss: "$" + formatNumber(countyData?.strongWindExpectedAnnualLossTotal),
-            history: countyData?.strongWindHistoricLossRatioTotalRating,
-        },
-        {
-            name: "Tornado",
-            rating: countyData?.tornadoExpectedAnnualLossRating,
-            score: countyData?.tornadoExpectedAnnualLossScore,
-            exposure: "$" + formatNumber(countyData?.tornadoExposureTotal),
-            frequency: formatNumber(countyData?.tornadoAnnualizedFrequency, 1) + " events per year",
-            loss: "$" + formatNumber(countyData?.tornadoExpectedAnnualLossTotal),
-            history: countyData?.tornadoHistoricLossRatioTotalRating,
-        },
-        {
-            name: "Tsunami",
-            rating: countyData?.tsunamiExpectedAnnualLossRating,
-            score: countyData?.tsunamiExpectedAnnualLossScore,
-            exposure: "$" + formatNumber(countyData?.tsunamiExposureTotal),
-            frequency: formatNumber(countyData?.tsunamiAnnualizedFrequency, 1) + " events per year",
-            loss: "$" + formatNumber(countyData?.tsunamiExpectedAnnualLossTotal),
-            history: countyData?.tsunamiHistoricLossRatioTotalRating,
-        },
-        {
-            name: "Volcanic Activity",
-            rating: countyData?.volcanicActivityExpectedAnnualLossRating,
-            score: countyData?.volcanicActivityExpectedAnnualLossScore,
-            exposure: "$" + formatNumber(countyData?.volcanicActivityExposureTotal),
-            frequency: formatNumber(countyData?.volcanicActivityAnnualizedFrequency, 1) + " events per year",
-            loss: "$" + formatNumber(countyData?.volcanicActivityExpectedAnnualLossTotal),
-            history: countyData?.volcanicActivityHistoricLossRatioTotalRating,
-        },
-        {
-            name: "Wildfire",
-            rating: countyData?.wildfireExpectedAnnualLossRating,
-            score: countyData?.wildfireExpectedAnnualLossScore,
-            exposure: "$" + formatNumber(countyData?.wildfireExposureTotal),
-            frequency: formatNumber(countyData?.wildfireAnnualizedFrequency ? countyData?.wildfireAnnualizedFrequency * 100 : 0, 3) + "% chance per year",
-            loss: "$" + formatNumber(countyData?.wildfireExpectedAnnualLossTotal),
-            history: countyData?.wildfireHistoricLossRatioTotalRating,
-        },
-        {
-            name: "Winter Weather",
-            rating: countyData?.winterWeatherExpectedAnnualLossRating,
-            score: countyData?.winterWeatherExpectedAnnualLossScore,
-            exposure: "$" + formatNumber(countyData?.winterWeatherExposureTotal),
-            frequency: formatNumber(countyData?.winterWeatherAnnualizedFrequency, 1) + " events per year",
-            loss: "$" + formatNumber(countyData?.winterWeatherExpectedAnnualLossTotal),
-            history: countyData?.winterWeatherHistoricLossRatioTotalRating,
-        }
-    ]
+    const lossTypes = baseTypes.map(({ key, name }) => {
+        const freqRaw = (countyData as any)?.[`${key}AnnualizedFrequency`] as number | undefined;
+        const isPercentBased = key === "wildfire" || key === "earthquake";
+      
+        const frequency = isPercentBased
+          ? `${formatNumber((freqRaw || 0) * 100, 3)}% chance per year`
+          : `${formatNumber(freqRaw, 1)} events per year`;
+      
+        return {
+          name,
+          rating: (countyData as any)?.[`${key}ExpectedAnnualLossRating`],
+          score: (countyData as any)?.[`${key}ExpectedAnnualLossScore`],
+          exposure: `$${formatNumber((countyData as any)?.[`${key}ExposureTotal`])}`,
+          frequency,
+          loss: `$${formatNumber((countyData as any)?.[`${key}ExpectedAnnualLossTotal`])}`,
+          history: (countyData as any)?.[`${key}HistoricLossRatioTotalRating`],
+        };
+      });
 
     const isDark = theme === "dark"
-
 
     return (
       <>
@@ -328,7 +182,7 @@ export default function LossPage({countyData}: LossPageProps) {
             margin={{ left: 20 }}
           >
             <XAxis type="number" domain={[0, 100]} tick={{fill: `${isDark ? "#ffffff" : "#000000"}`}}/>
-            <YAxis dataKey="name" type="category" tick={{fill: `${isDark ? "#ffffff" : "#000000"}`}}/>
+            <YAxis dataKey="name" type="category"  style={{ fontSize: ".8rem" }} tick={{fill: `${isDark ? "#ffffff" : "#000000"}`}}/>
             <Tooltip cursor={{fill: `${isDark ? "#3b3b3b" : "#dadada"}`, }} contentStyle={{ backgroundColor: `${isDark ? "#3b3b3b" : "#dadada"}`}}/>
             <Bar dataKey="value" fill={`${isDark ? "#ffffff" : "#000000"}`} barSize={10} />
           </BarChart>
@@ -345,7 +199,7 @@ export default function LossPage({countyData}: LossPageProps) {
             </div>
             <div className="flex flex-col gap-2">
                 {overviewDetails.map((detail) => (
-                    <div className="ml-6 flex justify-between bg-primary/10 p-2 rounded-lg gap-4" key={detail.name}>
+                    <div className="ml-6 flex justify-between bg-primary/10 p-2 rounded-lg gap-4" key={`${detail.name}-${detail.details[0]}`}>
                         <div className="text-base w-1/2">{detail.name}</div>
                         <div className="flex flex-col items-end w-1/2 text-end">
                             {detail.details.map((d, index) => (
@@ -360,12 +214,12 @@ export default function LossPage({countyData}: LossPageProps) {
             <div className="text-2xl font-bold">Expected Annual Loss Details</div>
             <div>Compared to the rest of the U.S, <span className="text-bold">{countyData.countyName} County, {countyData.stateNameAbbreviation}'s </span>expected annual loss due to each hazard type are:</div>
             <div className="flex flex-col gap-2 w-full">
-            {lossTypes.map((loss) => (
+            {lossTypes.map((loss, index) => (
                 <>
                         {loss.score 
                         ? 
-                            <div className="border-2 rounded-lg pb-4">
-                                <div className="flex justify-between bg-primary/10 p-2 rounded-t-lg gap-2" key={loss.name}>
+                            <div className="border-2 rounded-lg pb-4" key={`${loss.name}-${loss.rating}-lossDetails`}>
+                                <div className="flex justify-between bg-primary/10 p-2 rounded-t-lg gap-2" key={`${loss.name}-lossDetails-${index}`}>
                                     <div className="text-base">{loss.name}</div>
                                     <div className="flex flex-col items-end">
                                         <div className="font-bold">{loss.rating}</div>
@@ -384,7 +238,7 @@ export default function LossPage({countyData}: LossPageProps) {
                                             
                                         >
                                             <XAxis type="number" domain={[0, 100]} tick={{fill: `${isDark ? "#ffffff" : "#000000"}`}}/>
-                                            <YAxis dataKey="name" type="category" tick={{fill: `${isDark ? "#ffffff" : "#000000"}`}}/>
+                                            <YAxis dataKey="name" type="category" style={{ fontSize: ".8rem" }} tick={{fill: `${isDark ? "#ffffff" : "#000000"}`}}/>
                                             <Tooltip cursor={{fill: `${isDark ? "#3b3b3b" : "#dadada"}`, }} contentStyle={{ backgroundColor: `${isDark ? "#3b3b3b" : "#dadada"}`}}/>
                                             <Bar dataKey="value" fill={`${isDark ? "#ffffff" : "#000000"}`} barSize={10} />
                                         </BarChart>
@@ -408,7 +262,7 @@ export default function LossPage({countyData}: LossPageProps) {
                                 </div>
                             </div>
                         :
-                            <div className="flex justify-between bg-primary/10 p-2 rounded-lg gap-2" key={loss.name}>
+                            <div className="flex justify-between bg-primary/10 p-2 rounded-lg gap-2" key={`${loss.name}-lossDetails-${index}`}>
                                 <div className="text-base">{loss.name}</div>
                                 <div className="font-bold">{loss.rating}</div>
                             </div>

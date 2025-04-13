@@ -8,6 +8,8 @@ import {
 } from "recharts"
 import { hazard } from "@/db/schemas"
 import { useTheme } from "next-themes"
+import Link from "next/link"
+import { baseTypes } from "./baseTypes"
 
 interface RiskPageProps {
   countyData: typeof hazard.$inferSelect
@@ -16,7 +18,6 @@ interface RiskPageProps {
 export default function RiskPage({countyData}: RiskPageProps ) {
   const { theme } = useTheme()
   const isDark = theme === "dark" 
-
 
   const riskChartData = [
       { 
@@ -43,99 +44,13 @@ export default function RiskPage({countyData}: RiskPageProps ) {
         value: countyData?.communityResilienceRating,
       }
     ]
-  
-    const riskTypes = [
-      {
-        name: "Alavanche",
-        rating: countyData?.avalancheExpectedAnnualLossRating,
-        score: countyData?.avalancheExpectedAnnualLossScore,
-      },
-      {
-        name: "Coastal Flooding",
-        rating: countyData?.coastalFloodingExpectedAnnualLossRating,
-        score: countyData?.coastalFloodingExpectedAnnualLossScore,
-      },
-      {
-        name: "Cold Wave",
-        rating: countyData?.coldWaveExpectedAnnualLossRating,
-        score: countyData?.coldWaveExpectedAnnualLossScore,
-      },
-      {
-        name: "Drought",
-        rating: countyData?.droughtExpectedAnnualLossRating,
-        score: countyData?.droughtExpectedAnnualLossScore,
-      },
-      {
-        name: "Earthquake",
-        rating: countyData?.earthquakeExpectedAnnualLossRating,
-        score: countyData?.earthquakeExpectedAnnualLossScore,
-      },
-      {
-        name: "Hail",
-        rating: countyData?.hailExpectedAnnualLossRating,
-        score: countyData?.hailExpectedAnnualLossScore,
-      },
-      {
-        name: "Heat Wave",
-        rating: countyData?.heatWaveExpectedAnnualLossRating,
-        score: countyData?.heatWaveExpectedAnnualLossScore,
-      },
-      {
-        name: "Hurricane",
-        rating: countyData?.hurricaneExpectedAnnualLossRating,
-        score: countyData?.hurricaneExpectedAnnualLossScore,
-      },
-      {
-        name: "Ice Storm",
-        rating: countyData?.iceStormExpectedAnnualLossRating,
-        score: countyData?.iceStormExpectedAnnualLossScore,
-      },
-      {
-        name: "Landslide",
-        rating: countyData?.landslideExpectedAnnualLossRating,
-        score: countyData?.landslideExpectedAnnualLossScore,
-      },
-      {
-        name: "Lignhtning",
-        rating: countyData?.lightningExpectedAnnualLossRating,
-        score: countyData?.lightningExpectedAnnualLossScore,
-      },
-      {
-        name: "Riverine Flooding",
-        rating: countyData?.riverineFloodingExpectedAnnualLossRating,
-        score: countyData?.riverineFloodingExpectedAnnualLossScore,
-      },
-      {
-        name: "Strong Wind",
-        rating: countyData?.strongWindExpectedAnnualLossRating,
-        score: countyData?.strongWindExpectedAnnualLossScore,
-      },
-      {
-        name: "Tornado",
-        rating: countyData?.tornadoExpectedAnnualLossRating,
-        score: countyData?.tornadoExpectedAnnualLossScore,
-      },
-      {
-        name: "Tsunami",
-        rating: countyData?.tsunamiExpectedAnnualLossRating,
-        score: countyData?.tsunamiExpectedAnnualLossScore,
-      },
-      {
-        name: "Volcanic Alctivity",
-        rating: countyData?.volcanicActivityExpectedAnnualLossRating,
-        score: countyData?.volcanicActivityExpectedAnnualLossScore,
-      },
-      {
-        name: "Wildfire",
-        rating: countyData?.wildfireExpectedAnnualLossRating,
-        score: countyData?.wildfireExpectedAnnualLossScore,
-      },
-      {
-        name: "Winter Weather",
-        rating: countyData?.winterWeatherExpectedAnnualLossRating,
-        score: countyData?.winterWeatherExpectedAnnualLossScore,
-      }
-    ]
+    
+    const riskTypes = baseTypes.map(({ key, name }) => ({
+      name,
+      rating: (countyData as any)?.[`${key}ExpectedAnnualLossRating`],
+      score: (countyData as any)?.[`${key}ExpectedAnnualLossScore`],
+    }))
+
   return (
     <>
       <div className="flex flex-col gap-2 w-full">
@@ -152,7 +67,7 @@ export default function RiskPage({countyData}: RiskPageProps ) {
             margin={{ left: 20 }}
           >
             <XAxis type="number" domain={[0, 100]} tick={{fill: `${isDark ? "#ffffff" : "#000000"}`}}/>
-            <YAxis dataKey="name" type="category" tick={{fill: `${isDark ? "#ffffff" : "#000000"}`}}/>
+            <YAxis dataKey="name" style={{ fontSize: ".8rem" }} type="category" tick={{fill: `${isDark ? "#ffffff" : "#000000"}`}}/>
             <Tooltip cursor={{fill: `${isDark ? "#3b3b3b" : "#dadada"}`, }} contentStyle={{ backgroundColor: `${isDark ? "#3b3b3b" : "#dadada"}`}}/>
             <Bar dataKey="value" fill={`${isDark ? "#ffffff" : "#000000"}`} barSize={10} />
           </BarChart>
@@ -168,7 +83,7 @@ export default function RiskPage({countyData}: RiskPageProps ) {
         </div>
         <div className=" flex flex-col gap-2 w-full">
             {riskOverviews.map((risk) => (
-            <div className="flex justify-between bg-primary/10 p-2 rounded-lg">
+            <div className="flex justify-between bg-primary/10 p-2 rounded-lg" key={`${risk.name}-${risk.value}-riskOverviews`}>
               <div className="text-base">{risk.name}</div>
               <div className="font-bold">{risk.value}</div>
             </div>
@@ -182,11 +97,11 @@ export default function RiskPage({countyData}: RiskPageProps ) {
         </div>
         <div className=" flex flex-col gap-2 w-full">
             {riskTypes.map((risk) => (
-            <div className="flex justify-between bg-primary/10 p-2 rounded-lg">
+            <div className="flex justify-between bg-primary/10 p-2 rounded-lg" key={`${risk.name}-${risk.rating}-riskDetails`}>
               <div className="text-base">{risk.name}</div>
               <div className="flex flex-col items-end">
                 <div className="font-bold">{risk.rating}</div>
-                {risk.score && <div className="font-bold">Score: {risk.score?.toFixed(1)}</div>}
+                {typeof risk.score === "number" && risk.score !== 0 && <div className="font-bold">Score: {risk.score?.toFixed(1)}</div>}
               </div>
             </div>
             ))}
@@ -197,7 +112,7 @@ export default function RiskPage({countyData}: RiskPageProps ) {
         <div>Risk Index scores are calculated using an equation that combines scores for Expected Annual Loss due to natural hazards, Social Vulnerability and Community Resilience:</div>
         {/* Implement the calculation thingy later */}
         <div>Risk Index scores are presented as a composite score for all 18 hazard types, as well as individual scores for each hazard type.</div>
-        <div>For more information, visit the National Risk Index website's Determining Risk page.</div>
+        <div>For more information, visit the National Risk Index website's <Link href="https://hazards.fema.gov/determining-risk" className="font-bold underline">Determining Risk</Link> page.</div>
       </div>
     </>
   )
