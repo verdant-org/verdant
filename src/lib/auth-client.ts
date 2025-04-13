@@ -9,7 +9,7 @@ import {
 	oidcClient,
 	genericOAuthClient,
 	usernameClient,
-	emailOTPClient
+	emailOTPClient,
 } from "better-auth/client/plugins";
 import { toast } from "sonner";
 

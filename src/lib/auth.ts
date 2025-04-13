@@ -16,7 +16,7 @@ import { db } from "@/db/drizzle";
 import { nextCookies } from 'better-auth/next-js';
 import * as schema from "@/db/schemas"
 import { passkey } from "better-auth/plugins/passkey"
-import { resend } from "./email/resend";
+import { resend } from "./email";
 import { reactInvitationEmail } from './email/invitation';
 import { reactVerifyEmail } from './email/verify-email'
 import { reactResetPasswordEmail } from './email/reset-password';
@@ -37,7 +37,7 @@ export const auth = betterAuth({
     organization({
 			async sendInvitationEmail(data) {
 				await resend.emails.send({
-					from: "verdantassistant@gmail.com",
+					from: process.env.RESEND_EMAIL_ADDRESS as string,
 					to: data.email,
 					subject: "You've been invited to join an organization",
 					react: reactInvitationEmail({
@@ -45,13 +45,7 @@ export const auth = betterAuth({
 						invitedByUsername: data.inviter.user.name,
 						invitedByEmail: data.inviter.user.email,
 						teamName: data.organization.name,
-						inviteLink:
-							process.env.NODE_ENV === "development"
-								? `${process.env.BASE_URL}/accept-invitation/${data.id}`
-								: `${
-										process.env.BETTER_AUTH_URL ||
-										"https://demo.better-auth.com"
-									}/accept-invitation/${data.id}`,
+						inviteLink: `${process.env.BASE_URL}/accept-invitation/${data.id}`
 					}),
 				});
 			},
@@ -65,7 +59,7 @@ export const auth = betterAuth({
 			otpOptions: {
 				async sendOTP({ user, otp }) {
 					await resend.emails.send({
-						from: "verdantassistant@gmail.com",
+						from: "verdant@resend.dev",
 						to: user.email,
 						subject: "Your OTP",
 						html: `Your OTP is ${otp}`,
@@ -79,12 +73,15 @@ export const auth = betterAuth({
   },
   emailVerification: {
     sendVerificationEmail: async (data, request) => {
-      await resend.emails.send({
-        from: "asd",
+      const { error } = await resend.emails.send({
+        from: process.env.RESEND_EMAIL_ADDRESS as string,
         to: data.user.email,
         subject: "Verify your email address",
         react: reactVerifyEmail(data)
       })
+      if (error) {
+        console.error("Error sending email verification", error);
+      }
     }
   },
   socialProviders: {

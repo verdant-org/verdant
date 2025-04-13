@@ -10,7 +10,7 @@ import { Loader2 } from "lucide-react";
 import { signIn } from "@/lib/auth-client";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
 function SignIn() {
@@ -18,7 +18,6 @@ function SignIn() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false); // eslint-disable-line
   const [rememberMe, setRememberMe] = useState(false);
-  const { toast } = useToast();
   const router = useRouter();
 
   return (
@@ -95,8 +94,7 @@ function SignIn() {
                       setLoading(true);
                     },
                     onError: (ctx) => {
-                      toast({
-                        title: "Sign In Failed",
+                      toast("Signed in failed", {
                         description: ctx.error.message,
                       });
                     },
@@ -189,96 +187,6 @@ function SignIn() {
                   </svg>
                   
                 </Button>
-                {/* <Button
-                  variant="outline"
-                  className={cn(
-                    "flex-grow"
-                  )}
-                  onClick={async () => {
-                    await signIn.social({
-                      provider: "apple",
-                      callbackURL: "/"
-                    });
-                  }}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="1em"
-                    height="1em"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      fill="currentColor"
-                      d="M17.05 20.28c-.98.95-2.05.8-3.08.35c-1.09-.46-2.09-.48-3.24 0c-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8c1.18-.24 2.31-.93 3.57-.84c1.51.12 2.65.72 3.4 1.8c-3.12 1.87-2.38 5.98.48 7.13c-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25c.29 2.58-2.34 4.5-3.74 4.25"
-                    ></path>
-                  </svg>
-                  
-                </Button> */}
-                {/* <Button
-                  variant="outline"
-                  className={cn(
-                    "flex-grow"
-                  )}
-                  onClick={async () => {
-                    await signIn.social({
-                      provider: "facebook",
-                      callbackURL: "/"
-                    });
-                  }}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="1em"
-                    height="1em"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      d="M20 3H4a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h8.615v-6.96h-2.338v-2.725h2.338v-2c0-2.325 1.42-3.592 3.5-3.592c.699-.002 1.399.034 2.095.107v2.42h-1.435c-1.128 0-1.348.538-1.348 1.325v1.735h2.697l-.35 2.725h-2.348V21H20a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1z"
-                      fill="currentColor"
-                    ></path>
-                  </svg>
-                  
-                </Button> */}
-                {/* <Button
-                  variant="outline"
-                  className={cn(
-                    "flex-grow"
-                  )}
-                  onClick={async () => {
-                    await signIn.social({
-                      provider: "microsoft",
-                      callbackURL: "/"
-                    });
-                  }}
-                >
-                  <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="1em"
-                  height="1em"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    fill="currentColor"
-                    d="M2 3h9v9H2zm9 19H2v-9h9zM21 3v9h-9V3zm0 19h-9v-9h9z"
-                  ></path>
-                </svg>
-                  
-                </Button> */}
-                {/* <Button
-                  variant="outline"
-                  className={cn(
-                    "flex-grow"
-                  )}
-                  onClick={async () => {
-                    await signIn.social({
-                      provider: "twitter",
-                      callbackURL: "/"
-                    });
-                  }}
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 448 512"><path fill="currentColor" d="M64 32C28.7 32 0 60.7 0 96v320c0 35.3 28.7 64 64 64h320c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64zm297.1 84L257.3 234.6L379.4 396h-95.6L209 298.1L123.3 396H75.8l111-126.9L69.7 116h98l67.7 89.5l78.2-89.5zm-37.8 251.6L153.4 142.9h-28.3l171.8 224.7h26.3z"></path></svg>
-                  
-                </Button> */}
             </div>
         </div>
       </CardContent>
