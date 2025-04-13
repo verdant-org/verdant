@@ -8,6 +8,7 @@ import React, { useEffect, useState } from "react"
 import geoJSON from "./geojson-counties-fips.json"
 import LoadingScreen from "@/components/layout/accessory/LoadingScreen"
 import { hazard } from "@/db/schemas"
+import { useTheme } from "next-themes"
 
 interface GoogleMapsProps {
     place: google.maps.places.Place | null
@@ -24,6 +25,7 @@ const GoogleMaps = ({place, setCountyData, className}: GoogleMapsProps) => { // 
     const map = useMap()
     const [geoCodingService, setGeoCodingService] = useState<google.maps.Geocoder | null>(null)
     const [isLoading, setIsLoading] = useState(false)
+    const { theme } = useTheme()
 
     map?.data.addGeoJson(geoJSON)
     map?.data.setStyle({
@@ -53,7 +55,6 @@ const GoogleMaps = ({place, setCountyData, className}: GoogleMapsProps) => { // 
         }
 
         const { countyName, stateNameAbbreviation } = data
-
         const geocodedLocation = `${countyName} County ${stateNameAbbreviation}`
     
         if (!geoCodingService) {
@@ -75,23 +76,24 @@ const GoogleMaps = ({place, setCountyData, className}: GoogleMapsProps) => { // 
     const [camera, setCamera] = useState<CameraProps>({center: { lat: 39.8283, lng: -98.5795 }, zoom: 4})
 
     useEffect(() => {
-        setIsLoading(true)
-        if (!map) return
+        // if (!map) return
 
-        if (place?.location) {
-            setCamera({
-                center: {
-                    lat: place.location.lat(), 
-                    lng: place.location.lng()
-                }, 
+        // if (place?.location) {
+        //     setCamera({
+        //         center: {
+        //             lat: place.location.lat(), 
+        //             lng: place.location.lng()
+        //         }, 
                 
-            })
-        }
-        if (place?.viewport) {
-            map.fitBounds(place.viewport)
-        }
-        setIsLoading(false)
-    }, [map, place])
+        //     })
+        // }
+        // if (place?.viewport) {
+        //     map.fitBounds(place.viewport)
+        // }
+        // google.maps.event.trigger(map as any, "click", {
+        //     latLng: place?.location
+        // })
+    }, [place])
 
 
     return (

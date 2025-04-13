@@ -15,6 +15,8 @@ import {
 } from "@/components/ui/select"
 import RiskPage from "./riskPage"
 import LossPage from "./lossPage"
+import SocialPage from "./socialPage"
+import CommunityPage from "./communityPage"
 import Link from "next/link"
 
 export default function Page() {
@@ -60,6 +62,8 @@ export default function Page() {
               </div>
               {selectedOption === "risk_index" && <RiskPage countyData={countyData}/>}
               {selectedOption === "expected_annual_loss" && <LossPage countyData={countyData}/>}
+              {selectedOption === "social_vulenerability" && <SocialPage countyData={countyData}/>}
+              {selectedOption === "community_resilience" && <CommunityPage countyData={countyData}/>}
               <div className="flex flex-col gap-4 w-full pb-4 border-b-2">
                 <div className="">Do you want to reduce your risk?</div>
                 <Link href="https://hazards.fema.gov/nri/take-action" className="font-bold underline" target="_blank">Learn how to take action</Link>

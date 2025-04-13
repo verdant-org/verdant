@@ -8,7 +8,8 @@ import {
 	oneTap, // eslint-disable-line
 	oAuthProxy,
 	openAPI,
-	oidcProvider, // eslint-disable-line
+	oidcProvider, // eslint-disable-line,
+  emailOTP
 } from "better-auth/plugins";
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { db } from "@/db/drizzle";
@@ -17,6 +18,8 @@ import * as schema from "@/db/schemas"
 import { passkey } from "better-auth/plugins/passkey"
 import { resend } from "./email/resend";
 import { reactInvitationEmail } from './email/invitation';
+import { reactVerifyEmail } from './email/verify-email'
+import { reactResetPasswordEmail } from './email/reset-password';
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
@@ -53,6 +56,11 @@ export const auth = betterAuth({
 				});
 			},
 		}),
+    emailOTP({
+      async sendVerificationOTP(data, request) {
+          
+      },
+    }),
 		twoFactor({
 			otpOptions: {
 				async sendOTP({ user, otp }) {
@@ -69,31 +77,26 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
   },
+  emailVerification: {
+    sendVerificationEmail: async (data, request) => {
+      await resend.emails.send({
+        from: "asd",
+        to: data.user.email,
+        subject: "Verify your email address",
+        react: reactVerifyEmail(data)
+      })
+    }
+  },
   socialProviders: {
     google: {
         clientId: process.env.GOOGLE_CLIENT_ID as string,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET as string
     },
-    // facebook: {
-    //     clientId: process.env.FACEBOOK_CLIENT_ID as string,
-    //     clientSecret: process.env.FACEBOOK_CLIENT_SECRET as string
-    // },
+
     github: {
         clientId: process.env.GITHUB_CLIENT_ID as string,
         clientSecret: process.env.GITHUB_CLIENT_SECRET as string
     },
-    // apple: {
-    //     clientId: process.env.APPLE_CLIENT_ID as string,
-    //     clientSecret: process.env.APPLE_CLIENT_SECRET as string
-    // },
-    // microsoft: {
-    //     clientId: process.env.MICROSOFT_CLIENT_ID as string,
-    //     clientSecret: process.env.MICROSOFT_CLIENT_SECRET as string,
-    // },
-    // twitter: {
-    //     clientId: process.env.TWITTER_CLIENT_ID as string,
-    //     clientSecret: process.env.TWITTER_CLIENT_SECRET as string
-    // },
     discord: {
         clientId: process.env.DISCORD_CLIENT_ID as string,
         clientSecret: process.env.DISCORD_CLIENT_SECRET as string
