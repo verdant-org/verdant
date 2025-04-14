@@ -112,7 +112,7 @@ export default function RiskPage({countyData}: RiskPageProps ) {
         <div>Risk Index scores are calculated using an equation that combines scores for Expected Annual Loss due to natural hazards, Social Vulnerability and Community Resilience:</div>
         {/* Implement the calculation thingy later */}
         <div>Risk Index scores are presented as a composite score for all 18 hazard types, as well as individual scores for each hazard type.</div>
-        <div>For more information, visit the National Risk Index website's <Link href="https://hazards.fema.gov/determining-risk" className="font-bold underline">Determining Risk</Link> page.</div>
+        <div>For more information, visit the National Risk Index website's <Link href="https://hazards.fema.gov/determining-risk" className="font-bold underline" target="_blank">Determining Risk</Link> page.</div>
       </div>
     </>
   )

@@ -3,6 +3,7 @@
 import Icons from "@/components/icons"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { SignedIn, SignedOut } from "@/lib/auth-components"
 
 export default function VerdantHomePage() {
 
@@ -60,7 +61,7 @@ export default function VerdantHomePage() {
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {[
               { title: "Comprehensive Data", description: "Access a wide range of environmental indicators in one place." },
-              { title: "Real-time Updates", description: "Get the most current information, updated regularly from reliable sources." },
+              { title: "Reliable Information", description: "Get the most accurate information from your most trusted sources" },
               { title: "Easy to Understand", description: "Complex data presented in clear, visual formats for easy interpretation." },
               { title: "Actionable Insights", description: "Gain knowledge that can inform decision-making and conservation efforts." },
             ].map((reason, index) => (
@@ -82,16 +83,21 @@ export default function VerdantHomePage() {
             Join Verdant today and gain valuable insights into the environmental landscape around you.
           </p>
           <Button size="lg" className="gap-2">
-            Start Your Environmental Journey <Icons.Leaf className="w-5 h-5" />
+            <SignedIn>
+              Explore Now <Icons.Leaf className="w-5 h-5" />
+            </SignedIn>
+            <SignedOut>
+              Start Exploring for Free <Icons.Leaf className="w-5 h-5" />
+            </SignedOut>
           </Button>
         </section>
 
         <section className="py-10">
           <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
             {[
-              { icon: Icons.MapPin, text: "Data for over 1 million locations" },
-              { icon: Icons.Cloud, text: "Daily updates from global sources" },
-              { icon: Icons.AlertTriangle, text: "Risk assessments for 50+ natural disasters" },
+              { icon: Icons.MapPin, text: "Data for every county apart of the U.S" },
+              { icon: Icons.Cloud, text: "Most update to date consensus and information" },
+              { icon: Icons.AlertTriangle, text: "Risk assessments for 20 different environmental factors" },
             ].map((fact, index) => (
               <div key={index} className="flex items-center gap-4 bg-muted p-4 rounded-lg">
                 <fact.icon className="w-8 h-8" />

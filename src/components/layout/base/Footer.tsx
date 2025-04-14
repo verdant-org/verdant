@@ -11,13 +11,11 @@ import components from "@/components/layout/base/navigation-items"
 
 const socialIcons = [
     { name: "YouTube", icon: faYoutube, link: "https://www.youtube.com" },
-    // { name: "Facebook", icon: faFacebook, link: "https://www.facebook.com" },
     { name: "Twitter", icon: faXTwitter, link: "https://www.twitter.com" },
     { name: "GitHub", icon: faGithub, link: "https://www.github.com" },
     { name: "Discord", icon: faDiscord, link: "https://www.discord.com" },
     { name: "LinkedIn", icon: faLinkedin, link: "https://www.linkedin.com" },
     { name: "Instagram", icon: faInstagram, link: "https://www.instagram.com" },
-    // { name: "TikTok", icon: faTiktok, link: "https://www.tiktok.com" }
 ]
 
 const NewsletterForm = () => {
@@ -105,8 +103,12 @@ const Footer = () => {
                 <div className="font-bold text-sm md:text-base lg:text-lg">@ {currentDate} Verdant by Verdant Inc. All rights reserved.</div>
                 <div className="flex gap-4">
                     {socialIcons.map((icon) => (
-                        <Link href={icon.link} key={icon.name} className="bg-stone-300 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 transition duration-300 rounded-lg 
+                        <Link 
+                            href={icon.link} 
+                            key={icon.name} 
+                            className="bg-stone-300 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 transition duration-300 rounded-lg 
                             flex p-2 w-11 h-11 lg:h-12 lg:w-12 justify-center items-center shadow-stone-400 dark:shadow-black shadow-md"
+                             target="_blank"
                         >
                             <FontAwesomeIcon icon={icon.icon} size="xl"/>
                         </Link>

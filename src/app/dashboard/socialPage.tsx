@@ -5,8 +5,6 @@ import {
     YAxis,
     Bar,
     Tooltip,
-    LabelList,
-    Cell,
     ResponsiveContainer,
 } from "recharts"
 import { useTheme } from "next-themes"
@@ -62,10 +60,10 @@ export default function SocialPage({countyData}: SocialPageProps) {
                 data={socialChartData}
                 margin={{ left: 20 }}
                 >
-                <XAxis type="number" domain={[0, 100]} tick={{fill: `${isDark ? "#ffffff" : "#000000"}`}}/>
-                <YAxis dataKey="name" type="category" tick={{fill: `${isDark ? "#ffffff" : "#000000"}`}}/>
-                <Tooltip cursor={{fill: `${isDark ? "#3b3b3b" : "#dadada"}`, }} contentStyle={{ backgroundColor: `${isDark ? "#3b3b3b" : "#dadada"}`}}/>
-                <Bar dataKey="value" fill={`${isDark ? "#ffffff" : "#000000"}`} barSize={10} />
+                    <XAxis type="number" domain={[0, 100]} tick={{fill: `${isDark ? "#ffffff" : "#000000"}`}}/>
+                    <YAxis dataKey="name" type="category" style={{ fontSize: ".8rem" }}  tick={{fill: `${isDark ? "#ffffff" : "#000000"}`}}/>
+                    <Tooltip cursor={{fill: `${isDark ? "#3b3b3b" : "#dadada"}`, }} contentStyle={{ backgroundColor: `${isDark ? "#3b3b3b" : "#dadada"}`}}/>
+                    <Bar dataKey="value" fill={`${isDark ? "#ffffff" : "#000000"}`} barSize={10} />
                 </BarChart>
             </ResponsiveContainer>
             <div className="text-lg">
@@ -80,7 +78,7 @@ export default function SocialPage({countyData}: SocialPageProps) {
                     published by the <Link className="font-bold underline" href="https://www.cdc.gov/">Centers for Disease Control and Prevention (CDC)</Link>.
                 </div>
                 <div className="text-lg">
-                    For more information, visit the National Risk Index website's <Link className="font-bold underline" href="https://hazards.fema.gov/social-vulnerability">Social Vulnerability</Link> page.
+                    For more information, visit the National Risk Index website's <Link className="font-bold underline" href="https://hazards.fema.gov/social-vulnerability" target="_blank">Social Vulnerability</Link> page.
                 </div>
 
             </div>

@@ -63,7 +63,7 @@ export default function CommunityPage({countyData}: CommunityPageProps) {
                 margin={{ left: 20 }}
                 >
                 <XAxis type="number" domain={[0, 100]} tick={{fill: `${isDark ? "#ffffff" : "#000000"}`}}/>
-                <YAxis dataKey="name" type="category" tick={{fill: `${isDark ? "#ffffff" : "#000000"}`}}/>
+                <YAxis dataKey="name" type="category" style={{ fontSize: ".8rem" }}  tick={{fill: `${isDark ? "#ffffff" : "#000000"}`}}/>
                 <Tooltip cursor={{fill: `${isDark ? "#3b3b3b" : "#dadada"}`, }} contentStyle={{ backgroundColor: `${isDark ? "#3b3b3b" : "#dadada"}`}}/>
                 <Bar dataKey="value" fill={`${isDark ? "#ffffff" : "#000000"}`} barSize={10} />
                 </BarChart>
