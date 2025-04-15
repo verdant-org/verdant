@@ -1,5 +1,5 @@
 "use client"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { APIProvider } from "@vis.gl/react-google-maps"
 import GoogleMaps from "@/components/google/map"
 import { PlaceAutocomplete } from "@/components/google/autocomplete"
@@ -17,13 +17,64 @@ import LossPage from "./lossPage"
 import SocialPage from "./socialPage"
 import CommunityPage from "./communityPage"
 import Link from "next/link"
+import { useRouter, usePathname, useSearchParams } from "next/navigation"
 
 export default function Page() {
   const [searchLocation, setSearchLocation] = useState<google.maps.places.Place | null>(null)
   const [countyData, setCountyData] = useState<typeof hazard.$inferSelect | null>(null)
   const [selectedOption, setSelectedOption] = useState<string>("risk_index")
   const key = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string
-  
+  const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+
+  useEffect(() => {
+    const urlFips = searchParams.get("fips")
+    if (urlFips) {
+      fetch(`/api/dataset/hazard?fips=${urlFips}`).then(res => res.json()).then(async data => {
+        if (data) {
+          setCountyData(data)
+          const geocodeResponse = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(`${data.countyName} County, ${data.stateNameAbbreviation}`)}&key=${key}`)
+          const geocodeData = await geocodeResponse.json()
+          if (geocodeData.results?.[0]?.geometry) {
+            setSearchLocation({
+              ...geocodeData.results[0],
+              name: `${data.countyName} County, ${data.stateNameAbbreviation}`
+            } as google.maps.places.Place)
+          }
+        }
+      })
+    }
+  }, [])
+
+  useEffect(() => {
+    const updateUrl = () => {
+      if (countyData?.stateCountyFipsCode) {
+        const newParams = new URLSearchParams()
+        newParams.set("fips", countyData.stateCountyFipsCode)
+        router.replace(`${pathname}?${newParams.toString()}`, { scroll: false })
+      }
+    }
+    updateUrl()
+  }, [countyData, pathname, router])
+
+  function ShareButton() {
+    if (!countyData) return null
+    const handleClick = () => {
+      const url = `${window.location.origin}${pathname}?fips=${countyData.stateCountyFipsCode}`
+      navigator.clipboard.writeText(url)
+      alert("link copied to clipboard!")
+    }
+    return (
+      <button
+        onClick={handleClick}
+        className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors"
+      >
+        Share This County
+      </button>
+    )
+  }
+
   return (
     <APIProvider apiKey={key}>
       <div className="flex w-full">
@@ -35,29 +86,30 @@ export default function Page() {
           <PlaceAutocomplete onPlaceSelect={setSearchLocation} className="w-full"/>
           {countyData && (
             <div className="flex flex-col gap-4 w-full items-start">
+              <ShareButton />
               <div className="flex flex-col items-start gap-4 w-full">
                 <div className="font-bold text-2xl">{countyData.countyName} County</div>
                 <div className="text-lg">{countyData.stateName}, United States</div>
               </div>
               <div className="border-b-2 w-full pb-4">
                 <Select
-                    value={selectedOption}
-                    onValueChange={(value) => {
-                      setSelectedOption(value)
-                    }}
-                  >
-                    <SelectTrigger className="w-[200px]">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        <SelectItem value="risk_index" aria-selected>Risk Index</SelectItem>
-                        <SelectItem value="expected_annual_loss">Expected Annual Loss</SelectItem>
-                        <SelectItem value="social_vulenerability">Social Vulnerability</SelectItem>
-                        <SelectItem value="community_resilience">Community Resilience</SelectItem>
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
+                  value={selectedOption}
+                  onValueChange={(value) => {
+                    setSelectedOption(value)
+                  }}
+                >
+                  <SelectTrigger className="w-[200px]">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectItem value="risk_index" aria-selected>Risk Index</SelectItem>
+                      <SelectItem value="expected_annual_loss">Expected Annual Loss</SelectItem>
+                      <SelectItem value="social_vulenerability">Social Vulnerability</SelectItem>
+                      <SelectItem value="community_resilience">Community Resilience</SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
               </div>
               {selectedOption === "risk_index" && <RiskPage countyData={countyData}/>}
               {selectedOption === "expected_annual_loss" && <LossPage countyData={countyData}/>}
