@@ -1,41 +1,34 @@
 "use client";
 
 import { useState } from "react";
-import { useSession } from "@/lib/auth-client";
 import { Button } from "@/components/ui/button";
-import { resend } from "@/lib/email";
 
 const Contact = () => {
-    const { data: session } = useSession();
-    const userEmail = session?.user?.email;
-
+    const [email, setEmail] = useState("");
     const [message, setMessage] = useState("");
     const [responseMsg, setResponseMsg] = useState("");
     const [isError, setIsError] = useState(false);
     const [submitted, setSubmitted] = useState(false);
-    const handleSubmit = async () => {
-        if (!userEmail) {
-            setIsError(true);
-            setResponseMsg("You must be signed in to submit the form.");
-            return;
-        }
 
+    const handleSubmit = async () => {
         setResponseMsg("");
         setIsError(false);
 
         try {
-            await resend.emails.send({
-                from: process.env.RESEND_EMAIL_ADDRESS as string,
-                to: ["verdant@resend.dev"], 
-                replyTo: userEmail,
-                subject: "New Contact Form Message",
-                html: `
-                    <p><strong>From:</strong> ${userEmail}</p>
-                    <p><strong>Message:</strong></p>
-                    <p>${message}</p>
-                `
+            const res = await fetch("/api/contact", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, message })
             });
 
+            const data = await res.json();
+
+            if (!res.ok) {
+                setIsError(true);
+                throw new Error(data.message || "Something went wrong");
+            }
+
+            setEmail("");
             setMessage("");
             setResponseMsg("Message sent successfully!");
             setSubmitted(true);
@@ -46,7 +39,7 @@ const Contact = () => {
             }, 3000);
         } catch (err: any) {
             setIsError(true);
-            setResponseMsg(err.message || "An unexpected error occurred");
+            setResponseMsg(err.message);
         }
     };
 
@@ -54,8 +47,17 @@ const Contact = () => {
         <div className="p-8 flex flex-col items-center justify-center">
             <h1 className="text-3xl font-bold mb-4">Contact Us!</h1>
 
+            <input 
+                type="email"
+                placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full lg:w-[600px] mt-4 py-4 px-6 text-base border-4 border-gray-300 rounded-lg"
+                disabled={submitted}
+            />
+
             <textarea 
-                placeholder="Enter your message"
+                placeholder="Enter your question"
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 className="w-full lg:w-[600px] mt-6 h-40 py-4 px-6 text-base resize-none border-4 border-gray-300 rounded-lg"
