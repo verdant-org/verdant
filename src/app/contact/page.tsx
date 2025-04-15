@@ -2,7 +2,9 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { resend } from "@/lib/email";  // Correctly import the initialized resend instance
+import { resend } from "@/lib/email"; 
+
+
 
 const Contact = () => {
     const [email, setEmail] = useState("");
@@ -11,6 +13,7 @@ const Contact = () => {
     const [isError, setIsError] = useState(false);
     const [submitted, setSubmitted] = useState(false);
 
+    
     const handleSubmit = async () => {
         setResponseMsg("");
         setIsError(false);
@@ -39,7 +42,7 @@ const Contact = () => {
             }, 3000);
         } catch (err: any) {
             setIsError(true);
-            setResponseMsg(err.message || "An unexpected error occurred");
+            setResponseMsg(err.message || "An  error occurred");
         }
     };
 
