@@ -10,13 +10,13 @@ export default function TermsAndConditions() {
       </h1>
 
       <p className="mb-4">
-        Welcome to <span className="font-semibold text-green-700">Verdant</span>. By accessing or using this website, you agree to be bound by these Terms and Conditions. Please read them carefully.
+        Welcome to <span className="font-semibold text-green-700 dark:text-green-500">Verdant</span>. By accessing or using this website, you agree to be bound by these Terms and Conditions. Please read them carefully.
       </p>
 
       <SectionTitle>Acceptance of Terms</SectionTitle>
       <p className="mb-4">
-        By using this Service, you acknowledge that you have read, understood, and agree to be bound by these Terms and Conditions and our{" "}
-        <Link href="/PrivacyPolicy" className="underline text-blue-600 hover:text-green-600 transition-colors">Privacy Policy</Link>. If you do not agree, please do not use the Service.
+        By using this Service, you acknowledge that you have read, understood, and agree to be bound by these Terms and Conditions and our&nbsp;
+        <Link href="/PrivacyPolicy" className="underline text-blue-600 dark:text-blue-400 hover:text-green-600 dark:hover:text-green-400 transition-colors">Privacy Policy</Link>. If you do not agree, please do not use the Service.
       </p>
 
       <SectionTitle>Service Description</SectionTitle>
@@ -53,10 +53,10 @@ export default function TermsAndConditions() {
 
       <SectionTitle>Contact</SectionTitle>
       <p className="mb-4">
-        If you have any questions about these Terms and Conditions, please <Link href="/contact" className="underline text-blue-600 hover:text-green-600 transition-colors">contact us</Link>.
+        If you have any questions about these Terms and Conditions, please <Link href="/contact" className="underline text-blue-600 dark:text-blue-400 hover:text-green-600 dark:hover:text-green-400 transition-colors">contact us</Link>.
       </p>
 
-      <p className="text-sm text-gray-500 mt-8">
+      <p className="text-sm text-muted-foreground mt-8">
         Last updated: April 15, 2025
       </p>
     </div>

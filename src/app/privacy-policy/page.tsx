@@ -9,7 +9,7 @@ export default function PrivacyPolicy() {
       </h1>
 
       <p className="mb-4">
-        This Privacy Policy describes how <span className="font-semibold text-green-700">Verdant</span> collects, uses, and protects your information when you use our website and services.
+        This Privacy Policy describes how <span className="font-semibold text-green-700 dark:text-green-500">Verdant</span> collects, uses, and protects your information when you use our website and services.
       </p>
 
       <SectionTitle>Information We Collect</SectionTitle>
@@ -57,10 +57,10 @@ export default function PrivacyPolicy() {
 
       <SectionTitle>Contact Us</SectionTitle>
       <p className="mb-4">
-        If you have any questions or concerns about this Privacy Policy, please <Link href="/contact" className="underline text-blue-600 hover:text-green-600 transition-colors">contact us</Link>.
+        If you have any questions or concerns about this Privacy Policy, please <Link href="/contact" className="underline text-blue-600 dark:text-blue-400 hover:text-green-600 dark:hover:text-green-400 transition-colors">contact us</Link>.
       </p>
 
-      <p className="text-sm text-gray-500 mt-8">
+      <p className="text-sm text-muted-foreground mt-8">
         Last updated: April 15, 2025
       </p>
     </div>

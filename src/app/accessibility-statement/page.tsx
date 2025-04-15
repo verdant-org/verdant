@@ -9,7 +9,7 @@ export default function AccessibilityStatement() {
       </h1>
 
       <p className="mb-4">
-        At <span className="font-semibold text-green-700">Verdant</span>, we are committed to ensuring that our environmental risk mapping tool is accessible to everyone, regardless of ability or technology.
+        At <span className="font-semibold text-green-700 dark:text-green-500">Verdant</span>, we are committed to ensuring that our environmental risk mapping tool is accessible to everyone, regardless of ability or technology.
       </p>
 
       <SectionTitle>Our Commitment</SectionTitle>
@@ -34,7 +34,7 @@ export default function AccessibilityStatement() {
 
       <SectionTitle>Contact Us</SectionTitle>
       <p className="mb-4">
-        If you experience any difficulty accessing content on <span className="font-semibold text-green-700">Verdant</span>, or have suggestions for improvement, please <Link href="/contact" className="underline text-blue-600 hover:text-green-600 transition-colors">contact us</Link>. We value your input and will do our best to address your concerns.
+        If you experience any difficulty accessing content on <span className="font-semibold text-green-700 dark:text-green-500">Verdant</span>, or have suggestions for improvement, please <Link href="/contact" className="text-blue-600 dark:text-blue-400 hover:text-green-600 dark:hover:text-green-500 transition-colors">contact us</Link>. We value your input and will do our best to address your concerns.
       </p>
 
       <SectionTitle>Third-Party Content</SectionTitle>
@@ -42,7 +42,7 @@ export default function AccessibilityStatement() {
         While we strive to ensure accessibility on all parts of our website, some third-party content or features may not fully meet our standards. We encourage you to let us know if you encounter any barriers.
       </p>
 
-      <p className="text-sm text-gray-500 mt-8">
+      <p className="text-basee text-muted-foreground mt-8">
         Last updated: April 15, 2025
       </p>
     </div>

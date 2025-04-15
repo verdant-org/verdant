@@ -34,13 +34,18 @@ const NavBar = () => {
                 <NavigationMenuContent>
                   <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
                     {component.items.map((item) => (
-                        <ListItem
-                        key={item.title}
-                        title={item.title}
+                      <Link
                         href={item.href}
+                        key={item.title}
+                        {...item.title === "Documentation" ? { target: "_blank", rel: "noopener noreferrer" } : {}}
+                      >
+                        <ListItem
+                          key={item.title}
+                          title={item.title}
                         >
-                        {item.description}
+                          {item.description}
                         </ListItem>
+                      </Link>
                     ))}
                   </ul>
                 </NavigationMenuContent>
@@ -94,7 +99,7 @@ const Dropdown = () => {
                 >
                 {component.items.map((item) => (
                   <div className="my-4" key={`${item.title}-header-dropdown`}>
-                    <Link href={item.href}>
+                    <Link href={item.href} {...item.title === "Documentation" ? { target: "_blank", rel: "noopener noreferrer" } : {}}>
                       <div className="font-bold text-base">{item.title}</div>
                       <div className="text-sm">{item.description}</div>
                     </Link>
