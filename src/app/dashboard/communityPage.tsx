@@ -81,7 +81,7 @@ export default function CommunityPage({countyData}: CommunityPageProps) {
                     &nbsp;published by the <Link className="font-bold underline" href="https://www.sc.edu/study/colleges_schools/artsandsciences/centers_and_institutes/hvri/index.php/sovi%C2%AE-0">University of South Carolina's Hazards and Vulnerability Research Institute (HVRI).</Link>
                 </div>
                 <div className="text-lg">
-                    For more information, visit the National Risk Index website's <Link className="font-bold underline" href="https://hazards.fema.gov/community-resilience">Community Resilience</Link> page.
+                    For more information, visit the National Risk Index website's <Link className="font-bold underline" href="https://hazards.fema.gov/nri/community-resilience">Community Resilience</Link> page.
                 </div>
 
             </div>
