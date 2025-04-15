@@ -18,6 +18,7 @@ import SocialPage from "./socialPage"
 import CommunityPage from "./communityPage"
 import Link from "next/link"
 import { useRouter, usePathname, useSearchParams } from "next/navigation"
+import { toast } from "sonner"
 
 export default function Page() {
   const [searchLocation, setSearchLocation] = useState<google.maps.places.Place | null>(null)
@@ -27,25 +28,7 @@ export default function Page() {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
-
-  useEffect(() => {
-    const urlFips = searchParams.get("fips")
-    if (urlFips) {
-      fetch(`/api/dataset/hazard?fips=${urlFips}`).then(res => res.json()).then(async data => {
-        if (data) {
-          setCountyData(data)
-          const geocodeResponse = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(`${data.countyName} County, ${data.stateNameAbbreviation}`)}&key=${key}`)
-          const geocodeData = await geocodeResponse.json()
-          if (geocodeData.results?.[0]?.geometry) {
-            setSearchLocation({
-              ...geocodeData.results[0],
-              name: `${data.countyName} County, ${data.stateNameAbbreviation}`
-            } as google.maps.places.Place)
-          }
-        }
-      })
-    }
-  }, [])
+  const urlFips = searchParams.get("fips") || null
 
   useEffect(() => {
     const updateUrl = () => {
@@ -56,19 +39,19 @@ export default function Page() {
       }
     }
     updateUrl()
-  }, [countyData, pathname, router])
+  }, [countyData])
 
   function ShareButton() {
     if (!countyData) return null
     const handleClick = () => {
       const url = `${window.location.origin}${pathname}?fips=${countyData.stateCountyFipsCode}`
       navigator.clipboard.writeText(url)
-      alert("link copied to clipboard!")
+      toast("link copied to clipboard!")
     }
     return (
       <button
         onClick={handleClick}
-        className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors"
+        className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-500 transition duration-300"
       >
         Share This County
       </button>
@@ -79,7 +62,7 @@ export default function Page() {
     <APIProvider apiKey={key}>
       <div className="flex w-full">
         <div className="grow">
-          <GoogleMaps place={searchLocation} className={`w-full h-[52rem]`} setCountyData={setCountyData}/>
+          <GoogleMaps place={searchLocation} className={`w-full h-[52rem]`} setCountyData={setCountyData} sharedFip={urlFips}/>
         </div>
         <div className="flex flex-col items-center gap-4 max-w-lg w-full p-4 bg-stone-100 dark:bg-stone-900 h-[52rem] overflow-y-scroll no-scrollbar">
           <div className="text-bold text-xl">Find an Area</div>
