@@ -20,6 +20,7 @@ import SocialPage from "./socialPage"
 import CommunityPage from "./communityPage"
 import Link from "next/link"
 import { useRouter, usePathname, useSearchParams } from "next/navigation"
+import { verifyUser } from "@/lib/auth-components"
 
 export default function Page() {
   const [searchLocation, setSearchLocation] = useState<google.maps.places.Place | null>(null)
@@ -30,6 +31,8 @@ export default function Page() {
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const urlFips = searchParams.get("fips") || null
+
+  verifyUser()
 
   useEffect(() => {
     const updateUrl = () => {

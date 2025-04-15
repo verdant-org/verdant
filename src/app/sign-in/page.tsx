@@ -20,6 +20,11 @@ function SignIn() {
   const [rememberMe, setRememberMe] = useState(false);
   const router = useRouter();
 
+  let callbackURL = window.localStorage.getItem("redirectUrl") || "/";
+  if (callbackURL) {
+    window.localStorage.removeItem("redirectUrl");
+  }  
+
   return (
     <Card className="max-w-md">
       <CardHeader>
@@ -85,7 +90,7 @@ function SignIn() {
                 await signIn.email({ 
                   email, 
                   password, 
-                  callbackURL: "/",
+                  callbackURL: callbackURL,
                   fetchOptions: {
                     onResponse: () => {
                       setLoading(false);
@@ -99,7 +104,7 @@ function SignIn() {
                       });
                     },
                     onSuccess: () => { 
-                      router.push("/");
+                      router.push(callbackURL);
                     }
                   },
                 });
@@ -112,8 +117,7 @@ function SignIn() {
               )}
           </Button>
 
-          
-
+        
           <div className={cn(
               "w-full gap-2 flex items-center",
               "justify-between flex-wrap"
@@ -126,7 +130,7 @@ function SignIn() {
                 onClick={async () => {
                   await signIn.social({
                     provider: "google",
-                    callbackURL: "/"
+                    callbackURL: callbackURL
                   });
                 }}
               >
@@ -145,7 +149,7 @@ function SignIn() {
                   onClick={async () => {
                     await signIn.social({
                       provider: "github",
-                      callbackURL: "/"
+                      callbackURL: callbackURL
                     });
                   }}
                 >
@@ -170,7 +174,7 @@ function SignIn() {
                   onClick={async () => {
                     await signIn.social({
                       provider: "discord",
-                      callbackURL: "/"
+                      callbackURL: callbackURL
                     });
                   }}
                 >

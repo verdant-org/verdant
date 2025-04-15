@@ -1,5 +1,6 @@
 import { authClient } from "./auth-client";
 import React from "react";
+import { redirect } from "next/navigation";
 
 interface SignedInProps {
     children: React.ReactNode | null
@@ -27,4 +28,14 @@ export const SignedOut = ({ children }: SignedInProps) => {
             {children}
         </>
     )
+}
+
+export const verifyUser = () => {
+    const { data: session } = authClient.useSession()
+
+    if (!session) {
+        const url = window.location.href
+        window.localStorage.setItem("redirectUrl", url)
+        redirect("/sign-in")
+    }
 }
