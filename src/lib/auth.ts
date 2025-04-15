@@ -37,7 +37,7 @@ export const auth = betterAuth({
     organization({
 			async sendInvitationEmail(data) {
 				await resend.emails.send({
-					from: process.env.RESEND_EMAIL_ADDRESS as string,
+					from: "no-reply" + (process.env.RESEND_EMAIL_DNS as string) as string,
 					to: data.email,
 					subject: "You've been invited to join an organization",
 					react: reactInvitationEmail({
@@ -74,7 +74,7 @@ export const auth = betterAuth({
   emailVerification: {
     sendVerificationEmail: async (data, request) => {
       const { error } = await resend.emails.send({
-        from: process.env.RESEND_EMAIL_ADDRESS as string,
+        from:"no-reply" + (process.env.RESEND_EMAIL_DNS as string) as string,
         to: data.user.email,
         subject: "Verify your email address",
         react: reactVerifyEmail(data)
