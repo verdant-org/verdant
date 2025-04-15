@@ -13,6 +13,7 @@ interface GoogleMapsProps {
   place: google.maps.places.Place | null;
   setCountyData?: React.Dispatch<React.SetStateAction<typeof hazard.$inferSelect | null>>;
   className?: string;
+  sharedFip?: string | null
 }
 
 interface CameraProps {
@@ -21,30 +22,22 @@ interface CameraProps {
 }
 
 
-const GoogleMaps = ({ place, setCountyData, className }: GoogleMapsProps) => {
+const GoogleMaps = ({ place, setCountyData, className, sharedFip }: GoogleMapsProps) => {
   const map = useMap();
   const isLoaded = useApiIsLoaded();
   const [isLoading, setIsLoading] = useState(false);
-
-  const [camera, setCamera] = useState<CameraProps>({
-    center: { lat: 39.8283, lng: -98.5795 },
-    zoom: 4,
-  });
+  const [firstLoad, setFirstLoad] = useState(true);
 
   const clickListenerRef = useRef<google.maps.MapsEventListener | null>(null);
 
-  const handleFeatureClick = async (e: google.maps.Data.Feature) => {
+  const setMapData = async (fip: string) => {
     if (!map) return;
 
     setIsLoading(true);
-
-    const fip = e.getProperty("GEO_ID") as string;
-    const formattedFip = fip.substring(fip.lastIndexOf("US") + 2);
-
     const response = await fetch("/api/dataset/hazard", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ fip_code: formattedFip }),
+      body: JSON.stringify({ fip_code: fip }),
     });
 
     const data = await response.json();
@@ -64,6 +57,17 @@ const GoogleMaps = ({ place, setCountyData, className }: GoogleMapsProps) => {
       }
       setIsLoading(false);
     });
+  }
+
+  const handleFeatureClick = async (e: google.maps.Data.Feature) => {
+    if (!map) return;
+
+    setIsLoading(true);
+
+    const fip = e.getProperty("GEO_ID") as string;
+    const formattedFip = fip.substring(fip.lastIndexOf("US") + 2);
+
+    setMapData(formattedFip);
   };
 
   useEffect(() => {
@@ -103,13 +107,19 @@ const GoogleMaps = ({ place, setCountyData, className }: GoogleMapsProps) => {
     });
   }, [place, map]);
 
+  useEffect(() => {
+    if (!map || !sharedFip || !firstLoad) return;
+    setMapData(sharedFip);
+    setFirstLoad(false)
+  }, [sharedFip, map]);
+
   if (!isLoaded) return null;
 
   return (
     <div className="relative w-full h-full">
       <Map
-        defaultZoom={camera.zoom}
-        defaultCenter={camera.center}
+        defaultZoom={4}
+        defaultCenter={{ lat: 39.8283, lng: -98.5795 }}
         gestureHandling="cooperative"
         className={className || ""}
       />
