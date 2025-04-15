@@ -39,17 +39,17 @@ export const resourceComponents: ComponentListProps[] = [
 export const agreementComponents: ComponentListProps[] = [
   {
     title: "Terms and Conditions",
-    href: "/#",
+    href: "/TermsandConditions",
     description: "Read the terms and conditions for using our website"
   },
   {
     title: "Privacy Policy",
-    href: "/#",
+    href: "/PrivacyPolicy",
     description: "Learn how we handle and protect your personal information"
   },
   {
     title: "Accessibility Statement",
-    href: "/#",
+    href: "/AccessibilityStatement",
     description: "Find out how we ensure our website is accessible to everyone"
   }
 ]
