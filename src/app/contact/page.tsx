@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { resend } from "@/lib/email";  // Correctly import the initialized resend instance
 
 const Contact = () => {
     const [email, setEmail] = useState("");
@@ -15,18 +16,17 @@ const Contact = () => {
         setIsError(false);
 
         try {
-            const res = await fetch("/api/contact", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, message })
+            const emailResponse = await resend.emails.send({
+                from: process.env.RESEND_EMAIL_ADDRESS as string,  
+                to: ["verdant@resend.dev"],  
+                subject: "New Contact Form Message",
+                replyTo: email,
+                html: `
+                    <p><strong>From:</strong> ${email}</p>
+                    <p><strong>Message:</strong></p>
+                    <p>${message}</p>
+                `
             });
-
-            const data = await res.json();
-
-            if (!res.ok) {
-                setIsError(true);
-                throw new Error(data.message || "Something went wrong");
-            }
 
             setEmail("");
             setMessage("");
@@ -39,7 +39,7 @@ const Contact = () => {
             }, 3000);
         } catch (err: any) {
             setIsError(true);
-            setResponseMsg(err.message);
+            setResponseMsg(err.message || "An unexpected error occurred");
         }
     };
 
@@ -57,7 +57,7 @@ const Contact = () => {
             />
 
             <textarea 
-                placeholder="Enter your question"
+                placeholder="Enter your message"
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 className="w-full lg:w-[600px] mt-6 h-40 py-4 px-6 text-base resize-none border-4 border-gray-300 rounded-lg"
