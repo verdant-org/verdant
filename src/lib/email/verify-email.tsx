@@ -12,17 +12,20 @@ import {
 	Tailwind,
 	Section,
 } from "@react-email/components";
+import { User } from "better-auth";
 
-interface BetterAuthResetPasswordEmailProps {
-	username?: string;
-	resetLink?: string;
+interface BetterAuthVerifyEmailProps {
+	user?: User;
+	url?: string;
+    token?: string;
 }
 
-export const ResetPasswordEmail = ({
-	username,
-	resetLink,
-}: BetterAuthResetPasswordEmailProps) => {
-	const previewText = `Reset your BetterAuth password`;
+export const VerifyEmail = ({
+	user,
+	url,
+    token
+}: BetterAuthVerifyEmailProps) => {
+	const previewText = `Verdant Assistant: Verify your email address`;
 	return (
 		<Html>
 			<Head />
@@ -31,28 +34,28 @@ export const ResetPasswordEmail = ({
 				<Body className="bg-white my-auto mx-auto font-sans px-2">
 					<Container className="border border-solid border-[#eaeaea] rounded my-[40px] mx-auto p-[20px] max-w-[465px]">
 						<Heading className="text-black text-[24px] font-normal text-center p-0 my-[30px] mx-0">
-							Reset your <strong>Better Auth</strong> password
+							Verify <strong>your Verdant</strong> password
 						</Heading>
 						<Text className="text-black text-[14px] leading-[24px]">
-							Hello {username},
+							Hello {user?.name || "Friend"},
 						</Text>
 						<Text className="text-black text-[14px] leading-[24px]">
-							We received a request to reset your password for your Better Auth
+							We received a request to verify your email address for your Better Auth
 							account. If you didn't make this request, you can safely ignore
 							this email.
 						</Text>
 						<Section className="text-center mt-[32px] mb-[32px]">
 							<Button
 								className="bg-[#000000] rounded text-white text-[12px] font-semibold no-underline text-center px-5 py-3"
-								href={resetLink}
+								href={url}
 							>
-								Reset Password
+								Verify Email
 							</Button>
 						</Section>
 						<Text className="text-black text-[14px] leading-[24px]">
 							Or copy and paste this URL into your browser:{" "}
-							<Link href={resetLink} className="text-blue-600 no-underline">
-								{resetLink}
+							<Link href={url} className="text-blue-600 no-underline">
+								{url}
 							</Link>
 						</Text>
 						<Hr className="border border-solid border-[#eaeaea] my-[26px] mx-0 w-full" />
@@ -67,9 +70,9 @@ export const ResetPasswordEmail = ({
 	);
 };
 
-export function reactResetPasswordEmail(
-	props: BetterAuthResetPasswordEmailProps,
+export function reactVerifyEmail(
+	props: BetterAuthVerifyEmailProps,
 ) {
 	console.log(props);
-	return <ResetPasswordEmail {...props} />;
+	return <VerifyEmail {...props} />;
 }

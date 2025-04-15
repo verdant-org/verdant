@@ -1,0 +1,21 @@
+
+export const baseTypes = [
+    { key: "avalanche", name: "Avalanche" },
+    { key: "coastalFlooding", name: "Coastal Flooding" },
+    { key: "coldWave", name: "Cold Wave" },
+    { key: "drought", name: "Drought" },
+    { key: "earthquake", name: "Earthquake" },
+    { key: "hail", name: "Hail" },
+    { key: "heatWave", name: "Heat Wave" },
+    { key: "hurricane", name: "Hurricane" },
+    { key: "iceStorm", name: "Ice Storm" },
+    { key: "landslide", name: "Landslide" },
+    { key: "lightning", name: "Lightning" },
+    { key: "riverineFlooding", name: "Riverine Flooding" },
+    { key: "strongWind", name: "Strong Wind" },
+    { key: "tornado", name: "Tornado" },
+    { key: "tsunami", name: "Tsunami" },
+    { key: "volcanicActivity", name: "Volcanic Activity" },
+    { key: "wildfire", name: "Wildfire" },
+    { key: "winterWeather", name: "Winter Weather" },
+];

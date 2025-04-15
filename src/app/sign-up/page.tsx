@@ -15,7 +15,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { Loader2, X } from "lucide-react";
 import { signUp } from "@/lib/auth-client";
-import { useToast } from "@/hooks/use-toast"
+import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
@@ -28,7 +28,6 @@ function SignUp() {
 	const [image, setImage] = useState<File | null>(null);
 	const [imagePreview, setImagePreview] = useState<string | null>(null);
 	const router = useRouter();
-	const { toast } = useToast();
 	const [loading, setLoading] = useState(false);
 
 	const details = {
@@ -158,8 +157,7 @@ function SignUp() {
 						disabled={loading}
 						onClick={async () => {
 							if (password !== passwordConfirmation) {
-								toast({
-									title: "Sign Up Failed",
+								toast("Sign Up Failed", {
 									description: "Passwords do not match",
 								});
 								return;
@@ -178,9 +176,8 @@ function SignUp() {
 										setLoading(true);
 									},
 									onError: (ctx) => {
-										toast({
-										title: "Sign In Failed",
-										description: ctx.error.message,
+										toast("Sign Up Failed", {
+											description: "Passwords do not match",
 										});
 									},
 									onSuccess: () => {

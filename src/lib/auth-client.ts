@@ -8,12 +8,15 @@ import {
 	oneTapClient,
 	oidcClient,
 	genericOAuthClient,
+	usernameClient,
+	emailOTPClient,
 } from "better-auth/client/plugins";
 import { toast } from "sonner";
 
 export const authClient =  createAuthClient({
     baseURL: process.env.BASE_URL,
     plugins: [
+		usernameClient(),
 		organizationClient(),
 		twoFactorClient({
 			onTwoFactorRedirect() {
@@ -28,6 +31,7 @@ export const authClient =  createAuthClient({
 		}),
 		oidcClient(),
 		genericOAuthClient(),
+		emailOTPClient()
 	],
     fetchOptions: {
 		onError(e) {
