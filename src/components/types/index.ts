@@ -31,3 +31,5 @@ export interface RiskTypesProps {
     rating: string | null | undefined,
     score: number | null | undefined,
 }
+
+export type LegendMapProps = "Risk Index" | "Expected Annual Loss" | "Community Resilience" | "Social Vulnerability"

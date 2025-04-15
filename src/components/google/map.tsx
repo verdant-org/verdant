@@ -7,21 +7,18 @@ import React, { useEffect, useState, useRef } from "react";
 import geoJSON from "./geojson-counties-fips.json";
 import LoadingScreen from "@/components/layout/accessory/LoadingScreen";
 import { hazard } from "@/db/schemas"
+import { LegendMapProps } from "@/components/types"
+import { getColorByFip } from "./colorCode"
 
 interface GoogleMapsProps {
   place: google.maps.places.Place | null;
   setCountyData?: React.Dispatch<React.SetStateAction<typeof hazard.$inferSelect | null>>;
   className?: string;
   sharedFip?: string | null
+  legend: LegendMapProps
 }
 
-interface CameraProps {
-  center: { lat: number; lng: number };
-  zoom?: number;
-}
-
-
-const GoogleMaps = ({ place, setCountyData, className, sharedFip }: GoogleMapsProps) => {
+const GoogleMaps = ({ place, setCountyData, className, sharedFip, legend }: GoogleMapsProps) => {
   const map = useMap();
   const isLoaded = useApiIsLoaded();
   const [isLoading, setIsLoading] = useState(false);
@@ -73,10 +70,15 @@ const GoogleMaps = ({ place, setCountyData, className, sharedFip }: GoogleMapsPr
     if (!map || !isLoaded) return;
 
     map.data.addGeoJson(geoJSON);
-    map.data.setStyle({
-      fillColor: "#9febf5",
-      strokeWeight: 0.4,
-      fillOpacity: 0.36,
+    map.data.setStyle((feature) => {
+      const fip = feature.getProperty("GEO_ID") as string;
+      const formattedFip = fip.substring(fip.lastIndexOf("US") + 2);
+      const color = getColorByFip(formattedFip, legend);
+      return {
+        fillColor: color,
+        strokeWeight: 1,
+        fillOpacity: 0.7,
+      };
     });
 
     clickListenerRef.current = map.data.addListener("click", (e: any) => handleFeatureClick(e.feature as google.maps.Data.Feature));
@@ -86,7 +88,7 @@ const GoogleMaps = ({ place, setCountyData, className, sharedFip }: GoogleMapsPr
         google.maps.event.removeListener(clickListenerRef.current);
       }
     };
-  }, [map, isLoaded, setCountyData]);
+  }, [map, isLoaded, setCountyData, legend]);
 
   useEffect(() => {
     if (!map || !place?.location) return;
