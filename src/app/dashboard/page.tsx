@@ -14,6 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import LoadingScreen from "@/components/layout/accessory/LoadingScreen"
 import RiskPage from "./riskPage"
 import LossPage from "./lossPage"
 import SocialPage from "./socialPage"
@@ -23,6 +24,7 @@ import { useRouter, usePathname, useSearchParams } from "next/navigation"
 import { toast } from "sonner"
 import { LegendMapProps } from "@/components/types"
 import { colorMap } from "@/components/google/colorCode"
+import { useSession } from "@/lib/auth-client"
 
 export default function Page() {
   const [searchLocation, setSearchLocation] = useState<google.maps.places.Place | null>(null)
@@ -35,6 +37,7 @@ export default function Page() {
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const urlFips = searchParams.get("fips") || null
+  const { data, isPending } = useSession()
 
   useEffect(() => {
     const updateUrl = () => {
@@ -42,6 +45,7 @@ export default function Page() {
         const newParams = new URLSearchParams()
         newParams.set("fips", countyData.stateCountyFipsCode)
         router.replace(`${pathname}?${newParams.toString()}`, { scroll: false })
+        window.localStorage.removeItem("redirectUrl")
         setIsAvailable(true)
       } else setIsAvailable(false)
     }
@@ -64,6 +68,14 @@ export default function Page() {
       </button>
     )
   }
+
+  useEffect(() => {
+    if (!isPending && !data) {
+      window.localStorage.setItem("redirectUrl",`${window.location.pathname}${urlFips ? `?fips=${urlFips}` : ""}` )
+      router.push("/sign-in")
+    }
+  }, [isPending, data])
+
 
   return (
     <APIProvider apiKey={key}>

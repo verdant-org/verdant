@@ -21,9 +21,6 @@ function SignIn() {
   const router = useRouter();
 
   let callbackURL = window.localStorage.getItem("redirectUrl") || "/";
-  if (callbackURL) {
-    window.localStorage.removeItem("redirectUrl");
-  }  
 
   return (
     <Card className="max-w-md">
