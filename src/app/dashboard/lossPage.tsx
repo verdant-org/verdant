@@ -273,7 +273,7 @@ export default function LossPage({countyData}: LossPageProps) {
         </div>
         <div className="flex flex-col gap-2 w-full border-b-2">
             <div>Expected Annual Loss scores are presented as a compoosite score for all 18 hazard types, as well as individual scores for each hazard type</div>
-            <div>For more information, visit the National Risk Index's Website <Link href="https://hazards.fema.gov/expected-annual-loss" className="font-bold underline" target="_blank">Expected Annual loss</Link> page.</div>
+            <div>For more information, visit the National Risk Index's Website <Link href="https://hazards.fema.gov/nri/expected-annual-loss" className="font-bold underline" target="_blank">Expected Annual loss</Link> page.</div>
         </div>
       </>
     )

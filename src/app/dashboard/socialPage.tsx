@@ -78,7 +78,7 @@ export default function SocialPage({countyData}: SocialPageProps) {
                     published by the <Link className="font-bold underline" href="https://www.cdc.gov/">Centers for Disease Control and Prevention (CDC)</Link>.
                 </div>
                 <div className="text-lg">
-                    For more information, visit the National Risk Index website's <Link className="font-bold underline" href="https://hazards.fema.gov/social-vulnerability" target="_blank">Social Vulnerability</Link> page.
+                    For more information, visit the National Risk Index website's <Link className="font-bold underline" href="https://hazards.fema.gov/nri/social-vulnerability" target="_blank">Social Vulnerability</Link> page.
                 </div>
 
             </div>
