@@ -20,7 +20,7 @@ export const companyComponents: ComponentListProps[] = [
 
 export const resourceComponents: ComponentListProps[] = [
   {
-    title: "Frequently Asked Questions",
+    title: "FAQ",
     href: "/faq",
     description: "Search for frequently asked questions for our website"
   },
