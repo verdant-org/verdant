@@ -14,7 +14,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import LoadingScreen from "@/components/layout/accessory/LoadingScreen"
 import RiskPage from "./riskPage"
 import LossPage from "./lossPage"
 import SocialPage from "./socialPage"
@@ -25,6 +24,7 @@ import { toast } from "sonner"
 import { LegendMapProps } from "@/components/types"
 import { colorMap } from "@/components/google/colorCode"
 import { useSession } from "@/lib/auth-client"
+import { Suspense } from "react"
 
 export default function Page() {
   const [searchLocation, setSearchLocation] = useState<google.maps.places.Place | null>(null)
@@ -79,71 +79,73 @@ export default function Page() {
 
   return (
     <APIProvider apiKey={key}>
-      <div className="flex w-full">
-        <div className="grow relative">
-          <GoogleMaps place={searchLocation} className={`w-full h-[52rem]`} setCountyData={setCountyData} sharedFip={urlFips} legend={legend}/>
-          <div className="absolute bottom-14 left-4 bg-background rounded-lg p-4 shadow-lg flex flex-col gap-4">
-            <div className="text-lg font-bold border-b-2 pb-4">Map Legend</div>
-            <div>{legend}</div>
-            {Object.keys(colorMap[legend]).map((key) => (
-              <div key={key}>
-                <div key={key} className="flex items-center gap-2">
-                  <div className="w-5 h-5 rounded-sm border-2 border-primary" style={{ backgroundColor: colorMap[legend][key as keyof typeof colorMap[LegendMapProps]] }}></div>
-                  <div>{key}</div>
+      <Suspense>
+        <div className="flex w-full">
+          <div className="grow relative">
+            <GoogleMaps place={searchLocation} className={`w-full h-[52rem]`} setCountyData={setCountyData} sharedFip={urlFips} legend={legend}/>
+            <div className="absolute bottom-14 left-4 bg-background rounded-lg p-4 shadow-lg flex flex-col gap-4">
+              <div className="text-lg font-bold border-b-2 pb-4">Map Legend</div>
+              <div>{legend}</div>
+              {Object.keys(colorMap[legend]).map((key) => (
+                <div key={key}>
+                  <div key={key} className="flex items-center gap-2">
+                    <div className="w-5 h-5 rounded-sm border-2 border-primary" style={{ backgroundColor: colorMap[legend][key as keyof typeof colorMap[LegendMapProps]] }}></div>
+                    <div>{key}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="flex flex-col items-center gap-4 max-w-lg w-full p-4 bg-stone-100 dark:bg-stone-900 h-[52rem] overflow-y-scroll no-scrollbar">
+            <div className="text-bold text-xl">Find an Area</div>
+            <PlaceAutocomplete onPlaceSelect={setSearchLocation} className="w-full"/>
+            <div className="flex flex-col gap-4 w-full items-start my-4">
+              <div className="font-bold text-2xl">Change Map Legend</div>
+            </div>
+            {countyData && isAvailable && (
+              <div className="flex flex-col gap-4 w-full items-start">
+                <ShareButton />
+                <div className="flex flex-col items-start gap-4 w-full">
+                  <div className="font-bold text-2xl">{countyData.countyName} County</div>
+                  <div className="text-lg">{countyData.stateName}, United States</div>
+                </div>
+                <div className="border-b-2 w-full pb-4">
+                  <Select
+                    value={selectedOption}
+                    onValueChange={(value) => {
+                      setSelectedOption(value)
+                      setLegend(value.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()) as LegendMapProps)
+                    }}
+                  >
+                    <SelectTrigger className="w-[200px]">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectItem value="risk_index">Risk Index</SelectItem>
+                        <SelectItem value="expected_annual_loss">Expected Annual Loss</SelectItem>
+                        <SelectItem value="social_vulnerability">Social Vulnerability</SelectItem>
+                        <SelectItem value="community_resilience">Community Resilience</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </div>
+                {selectedOption === "risk_index" && <RiskPage countyData={countyData}/>}
+                {selectedOption === "expected_annual_loss" && <LossPage countyData={countyData}/>}
+                {selectedOption === "social_vulnerability" && <SocialPage countyData={countyData}/>}
+                {selectedOption === "community_resilience" && <CommunityPage countyData={countyData}/>}
+                <div className="flex flex-col gap-4 w-full pb-4 border-b-2">
+                  <div className="">Do you want to reduce your risk?</div>
+                  <Link href="https://hazards.fema.gov/nri/take-action" className="font-bold underline" target="_blank">Learn how to take action</Link>
                 </div>
               </div>
-            ))}
+            )}
+            {!isAvailable && (
+              <div className="text-lg font-bold text-center text-red-600">This county has not published any hazard information, please try again</div>
+            )}
           </div>
         </div>
-        <div className="flex flex-col items-center gap-4 max-w-lg w-full p-4 bg-stone-100 dark:bg-stone-900 h-[52rem] overflow-y-scroll no-scrollbar">
-          <div className="text-bold text-xl">Find an Area</div>
-          <PlaceAutocomplete onPlaceSelect={setSearchLocation} className="w-full"/>
-          <div className="flex flex-col gap-4 w-full items-start my-4">
-            <div className="font-bold text-2xl">Change Map Legend</div>
-          </div>
-          {countyData && isAvailable && (
-            <div className="flex flex-col gap-4 w-full items-start">
-              <ShareButton />
-              <div className="flex flex-col items-start gap-4 w-full">
-                <div className="font-bold text-2xl">{countyData.countyName} County</div>
-                <div className="text-lg">{countyData.stateName}, United States</div>
-              </div>
-              <div className="border-b-2 w-full pb-4">
-                <Select
-                  value={selectedOption}
-                  onValueChange={(value) => {
-                    setSelectedOption(value)
-                    setLegend(value.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()) as LegendMapProps)
-                  }}
-                >
-                  <SelectTrigger className="w-[200px]">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectItem value="risk_index">Risk Index</SelectItem>
-                      <SelectItem value="expected_annual_loss">Expected Annual Loss</SelectItem>
-                      <SelectItem value="social_vulnerability">Social Vulnerability</SelectItem>
-                      <SelectItem value="community_resilience">Community Resilience</SelectItem>
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </div>
-              {selectedOption === "risk_index" && <RiskPage countyData={countyData}/>}
-              {selectedOption === "expected_annual_loss" && <LossPage countyData={countyData}/>}
-              {selectedOption === "social_vulnerability" && <SocialPage countyData={countyData}/>}
-              {selectedOption === "community_resilience" && <CommunityPage countyData={countyData}/>}
-              <div className="flex flex-col gap-4 w-full pb-4 border-b-2">
-                <div className="">Do you want to reduce your risk?</div>
-                <Link href="https://hazards.fema.gov/nri/take-action" className="font-bold underline" target="_blank">Learn how to take action</Link>
-              </div>
-            </div>
-          )}
-          {!isAvailable && (
-            <div className="text-lg font-bold text-center text-red-600">This county has not published any hazard information, please try again</div>
-          )}
-        </div>
-      </div>
+      </Suspense>
     </APIProvider>
   )
 }
