@@ -11,5 +11,9 @@ export async function POST(request: NextRequest) {
         where: eq(hazard.stateCountyFipsCode, data.fip_code),
     })
     
+    if (!countyData) {
+        return NextResponse.json(null, { status: 400 })
+    }
+
     return NextResponse.json(countyData)
 }

@@ -272,6 +272,23 @@ export default function LossPage({countyData}: LossPageProps) {
             </div>
         </div>
         <div className="flex flex-col gap-2 w-full border-b-2">
+            <div className="text-2xl font-bold">Calculating Expected Annual Loss</div>
+            <div>Expected Annual Loss scores are calculated using an equation that combines values for exposure, annualized frequency, and historic loss ratios for 18 hazard types:</div>
+            <div className="flex flex-col gap-2 w-full border mx-auto font-bold p-8">
+                <div className="">Exposure</div>
+                <div className="flex items-center gap-4">
+                    <div className="text-base">x</div>
+                    <div className="text-base">Annual Frequency</div>
+                </div>
+                <div className="flex items-center gap-4 border-b border-primary pb-4">
+                    <div className="text-basee">x</div>
+                    <div className="text-base">Historic Loss Ratio</div>
+                </div>
+                <div className="flex items-center gap-4">
+                    <div className="text-base">=</div>
+                    <div className="text-base text-orange-600 dark:text-orange-400">Expected Annual Loss</div>
+                </div>
+            </div>
             <div>Expected Annual Loss scores are presented as a compoosite score for all 18 hazard types, as well as individual scores for each hazard type</div>
             <div>For more information, visit the National Risk Index's Website <Link href="https://hazards.fema.gov/nri/expected-annual-loss" className="font-bold underline" target="_blank">Expected Annual loss</Link> page.</div>
         </div>

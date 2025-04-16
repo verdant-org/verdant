@@ -27,6 +27,7 @@ export default function Page() {
   const [countyData, setCountyData] = useState<typeof hazard.$inferSelect | null>(null)
   const [selectedOption, setSelectedOption] = useState<string>("risk_index")
   const [legend, setLegend] = useState<LegendMapProps>("Risk Index")
+  const [isAvailable, setIsAvailable] = useState(true)
   const key = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string
   const router = useRouter()
   const pathname = usePathname()
@@ -39,7 +40,8 @@ export default function Page() {
         const newParams = new URLSearchParams()
         newParams.set("fips", countyData.stateCountyFipsCode)
         router.replace(`${pathname}?${newParams.toString()}`, { scroll: false })
-      }
+        setIsAvailable(true)
+      } else setIsAvailable(false)
     }
     updateUrl()
   }, [countyData])
@@ -49,7 +51,7 @@ export default function Page() {
     const handleClick = () => {
       const url = `${window.location.origin}${pathname}?fips=${countyData.stateCountyFipsCode}`
       navigator.clipboard.writeText(url)
-      toast("link copied to clipboard!")
+      toast("Link copied to clipboard!")
     }
     return (
       <button
@@ -82,7 +84,10 @@ export default function Page() {
         <div className="flex flex-col items-center gap-4 max-w-lg w-full p-4 bg-stone-100 dark:bg-stone-900 h-[52rem] overflow-y-scroll no-scrollbar">
           <div className="text-bold text-xl">Find an Area</div>
           <PlaceAutocomplete onPlaceSelect={setSearchLocation} className="w-full"/>
-          {countyData && (
+          <div className="flex flex-col gap-4 w-full items-start my-4">
+            <div className="font-bold text-2xl">Change Map Legend</div>
+          </div>
+          {countyData && isAvailable && (
             <div className="flex flex-col gap-4 w-full items-start">
               <ShareButton />
               <div className="flex flex-col items-start gap-4 w-full">
@@ -119,6 +124,9 @@ export default function Page() {
                 <Link href="https://hazards.fema.gov/nri/take-action" className="font-bold underline" target="_blank">Learn how to take action</Link>
               </div>
             </div>
+          )}
+          {!isAvailable && (
+            <div className="text-lg font-bold text-center text-red-600">This county has not published any hazard information, please try again</div>
           )}
         </div>
       </div>

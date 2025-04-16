@@ -73,6 +73,7 @@ export default function SocialPage({countyData}: SocialPageProps) {
             </div>
             <div className="flex flex-col gap-4 w-full items-start">
                 <div className="font-bold text-2xl">Calculating Social Vulnerability</div>
+                
                 <div>
                     Social Vulnerability is measured using the <Link className="font-bold underline" href="https://www.atsdr.cdc.gov/place-health/php/svi/index.html">Social Vulnerability Index (SVI)</Link> 
                     published by the <Link className="font-bold underline" href="https://www.cdc.gov/">Centers for Disease Control and Prevention (CDC)</Link>.
@@ -80,7 +81,6 @@ export default function SocialPage({countyData}: SocialPageProps) {
                 <div className="text-lg">
                     For more information, visit the National Risk Index website's <Link className="font-bold underline" href="https://hazards.fema.gov/nri/social-vulnerability" target="_blank">Social Vulnerability</Link> page.
                 </div>
-
             </div>
         </div>
     )

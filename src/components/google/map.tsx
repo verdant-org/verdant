@@ -37,8 +37,12 @@ const GoogleMaps = ({ place, setCountyData, className, sharedFip, legend }: Goog
     });
 
     const data = await response.json();
-    setCountyData?.(data);
 
+    setCountyData?.(data);
+    if (!data) {
+      setIsLoading(false);
+      return;
+    }
     const { countyName, stateNameAbbreviation } = data;
     const geocodedLocation = `${countyName} County ${stateNameAbbreviation}`;
 
