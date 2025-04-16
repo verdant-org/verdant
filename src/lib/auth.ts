@@ -20,6 +20,7 @@ import { resend } from "./email";
 import { reactInvitationEmail } from './email/invitation';
 import { reactVerifyEmail } from './email/verify-email'
 import { reactResetPasswordEmail } from './email/reset-password';
+import { reactOTPVerification } from './email/one-time-passcode';
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
@@ -51,9 +52,20 @@ export const auth = betterAuth({
 			},
 		}),
     emailOTP({
-      async sendVerificationOTP(data, request) {
-          
-      },
+      otpLength: 8,
+      expiresIn: 300,
+      async sendVerificationOTP({ email, otp, type }) {
+          await resend.emails.send({
+            from: "no-reply" + (process.env.RESEND_EMAIL_DNS as string) as string,
+            to: email,
+            subject: "Your OTP",
+            react: reactOTPVerification({
+              email,
+              otp
+            })
+        })
+
+      }
     }),
 		twoFactor({
 			otpOptions: {
@@ -82,7 +94,7 @@ export const auth = betterAuth({
       if (error) {
         console.error("Error sending email verification", error);
       }
-    }
+    },
   },
   socialProviders: {
     google: {

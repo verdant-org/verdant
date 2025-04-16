@@ -12,15 +12,14 @@ import {
 	Tailwind,
 	Section,
 } from "@react-email/components";
-import { User } from "better-auth";
 
 interface BetterAuthVerifyEmailProps {
-	user?: User;
+	email?: string;
 	otp?: string
 }
 
 export const VerifyEmail = ({
-	user,
+	email,
 	otp
 }: BetterAuthVerifyEmailProps) => {
 	const previewText = `Verdant Assistant: One Time Passcode`;
@@ -52,7 +51,7 @@ export const VerifyEmail = ({
 	);
 };
 
-export function reactVerifyEmail(
+export function reactOTPVerification(
 	props: BetterAuthVerifyEmailProps,
 ) {
 	console.log(props);
