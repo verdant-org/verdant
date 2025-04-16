@@ -9,27 +9,12 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbP
 export default function GuidePage() {
   return (
     <div className="container mx-auto py-8 px-4 md:px-6">
-      {/* Breadcrumb navigation */}
-      <Breadcrumb className="mb-6">
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink href="/">Home</BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbItem>
-            <BreadcrumbPage>Guide</BreadcrumbPage>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
-
-      {/* Page Title */}
       <div className="mb-8">
         <h1 className="text-4xl font-bold mb-4">Environmental Risk Assessment Guide</h1>
         <p className="text-xl text-muted-foreground">
           Learn how to use our platform to assess environmental risks in your area.
         </p>
       </div>
-
-      {/* Table of Contents */}
       <Card className="mb-8 p-6">
         <h2 className="text-2xl font-semibold mb-4">Table of Contents</h2>
         <nav>
@@ -83,8 +68,6 @@ export default function GuidePage() {
           </ul>
         </nav>
       </Card>
-
-      {/* Introduction Section */}
       <section id="introduction" className="mb-12">
         <h2 className="text-3xl font-bold mb-4">Introduction</h2>
         <Separator className="mb-6" />
@@ -100,8 +83,6 @@ export default function GuidePage() {
           </p>
         </div>
       </section>
-
-      {/* Getting Started Section */}
       <section id="getting-started" className="mb-12">
         <h2 className="text-3xl font-bold mb-4">Getting Started</h2>
         <Separator className="mb-6" />
@@ -138,8 +119,6 @@ export default function GuidePage() {
           </div>
         </div>
       </section>
-
-      {/* Using the Dashboard Section */}
       <section id="using-the-dashboard" className="mb-12">
         <h2 className="text-3xl font-bold mb-4">Using the Dashboard</h2>
         <Separator className="mb-6" />
@@ -222,8 +201,6 @@ export default function GuidePage() {
           </div>
         </div>
       </section>
-
-      {/* Understanding Risk Data Section */}
       <section id="understanding-risk-data" className="mb-12">
         <h2 className="text-3xl font-bold mb-4">Understanding Risk Data</h2>
         <Separator className="mb-6" />
@@ -309,8 +286,6 @@ export default function GuidePage() {
           </div>
         </div>
       </section>
-
-      {/* Profile Management Section */}
       <section id="profile-management" className="mb-12">
         <h2 className="text-3xl font-bold mb-4">Profile Management</h2>
         <Separator className="mb-6" />
@@ -335,8 +310,6 @@ export default function GuidePage() {
           </p>
         </div>
       </section>
-
-      {/* Need Help Section */}
       <section id="need-help" className="mb-8">
         <Card className="p-6 bg-muted">
           <h2 className="text-2xl font-bold mb-2">Need Additional Help?</h2>

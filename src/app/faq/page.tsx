@@ -1,15 +1,9 @@
-"use client"
-
-import { useState } from "react"
-import { 
-    Collapsible,
-    CollapsibleContent,
-    CollapsibleTrigger,
- } from "@radix-ui/react-collapsible"
- import { 
-    Plus,
-    X
-  } from "lucide-react"
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
 
 interface FAQItem {
     question: string
@@ -68,43 +62,14 @@ const faqs: FAQItem[] = [
 ]
 
 export default function FAQ() {
-    const [openItems, setOpenItems] = useState<{ [key: number]: boolean }>({})
-
-    const toggleItem = (index: number) => {
-        setOpenItems((prev) => ({
-            ...prev,
-            [index]: !prev[index],
-        }))
-    }
-
-
     return (
-        <div className="container mx-auto py-12 px-4 max-w-4xl">
-          <h1 className="text-3xl font-bold mb-8 text-center">Frequently Asked Questions</h1>
-          
-          <div className="space-y-4">
-            {faqs.map((faq, index) => (
-              <Collapsible
-                key={index}
-                open={openItems[index]}
-                onOpenChange={() => toggleItem(index)}
-                className="border rounded-lg overflow-hidden"
-              >
-                <CollapsibleTrigger className="flex justify-between items-center w-full p-4 text-left bg-muted/20 hover:bg-muted/40 transition-colors">
-                  <h3 className="text-lg font-medium">{faq.question}</h3>
-                  {openItems[index] ? (
-                    <X className="h-5 w-5 flex-shrink-0" />
-                  ) : (
-                    <Plus className="h-5 w-5 flex-shrink-0" />
-                  )}
-                </CollapsibleTrigger>
-
-                <CollapsibleContent className="p-4 bg-background border-t">
-                  <div className="text-muted-foreground">{faq.answer}</div>
-                </CollapsibleContent>
-              </Collapsible>
-            ))}
-          </div>
-        </div>
-      );
+      <Accordion type="single" collapsible className="w-full max-w-2xl mx-auto py-16">
+        {faqs.map((faq, index) => (
+          <AccordionItem key={index} value={`item-${index}`} className="border-b">
+            <AccordionTrigger className="text-lg font-semibold py-4">{faq.question}</AccordionTrigger>
+            <AccordionContent className="py-2">{faq.answer}</AccordionContent>
+          </AccordionItem>
+        ))}
+      </Accordion>
+    )
 }
