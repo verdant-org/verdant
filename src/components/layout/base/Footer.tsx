@@ -91,7 +91,13 @@ const Footer = () => {
                         <div>
                             <div className="flex flex-col gap-2 text-base font-bold text-stone-700 dark:text-stone-400">
                                 {component.items.map((item) => (
-                                    <Link href={item.href} key={`${item.title}-footer`}>{item.title}</Link>
+                                    <Link 
+                                        href={item.href} 
+                                        key={`${item.title}-footer`} 
+                                        {...item.title === "Documentation" ? { target: "_blank", rel: "noopener noreferrer" } : {}}
+                                    >
+                                        {item.title}
+                                    </Link>
                                 ))}
                             </div>
                         </div>
@@ -105,10 +111,11 @@ const Footer = () => {
                     {socialIcons.map((icon) => (
                         <Link 
                             href={icon.link} 
-                            key={icon.name} 
+                            key={icon.name}
                             className="bg-stone-300 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 transition duration-300 rounded-lg 
                             flex p-2 w-11 h-11 lg:h-12 lg:w-12 justify-center items-center shadow-stone-400 dark:shadow-black shadow-md"
                              target="_blank"
+                             rel="noopener noreferrer"
                         >
                             <FontAwesomeIcon icon={icon.icon} size="xl"/>
                         </Link>

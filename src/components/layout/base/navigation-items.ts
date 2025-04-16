@@ -3,12 +3,12 @@ import { ComponentListProps, ComponentListGroupProps } from "@/components/types"
 export const companyComponents: ComponentListProps[] = [
   {
     title: "About Us",
-    href: "/#",
+    href: "/about",
     description: "Learn more about our website and purpose"
   },
   {
     title: "Contact Us",
-    href: "/#",
+    href: "/contact",
     description: "Reach out to us and find further assistance"
   },
   {
@@ -20,13 +20,13 @@ export const companyComponents: ComponentListProps[] = [
 
 export const resourceComponents: ComponentListProps[] = [
   {
-    title: "Frequenty Asked Questions",
-    href: "/#",
+    title: "Frequently Asked Questions",
+    href: "/faq",
     description: "Search for frequently asked questions for our website"
   },
   {
     title: "Guide",
-    href: "/#",
+    href: "/guide",
     description: "Learn how to navigate and use the resources for our website"
   },
   {
@@ -39,17 +39,17 @@ export const resourceComponents: ComponentListProps[] = [
 export const agreementComponents: ComponentListProps[] = [
   {
     title: "Terms and Conditions",
-    href: "/#",
+    href: "/terms-and-conditions",
     description: "Read the terms and conditions for using our website"
   },
   {
     title: "Privacy Policy",
-    href: "/#",
+    href: "/privacy-policy",
     description: "Learn how we handle and protect your personal information"
   },
   {
     title: "Accessibility Statement",
-    href: "/#",
+    href: "/accessibility-statement",
     description: "Find out how we ensure our website is accessible to everyone"
   }
 ]

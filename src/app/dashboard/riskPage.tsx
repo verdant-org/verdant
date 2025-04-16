@@ -110,9 +110,23 @@ export default function RiskPage({countyData}: RiskPageProps ) {
       <div className="flex flex-col gap-4 w-full pb-4 border-b-2">
         <div className="text-2xl font-bold">Calculating the Risk Index</div>
         <div>Risk Index scores are calculated using an equation that combines scores for Expected Annual Loss due to natural hazards, Social Vulnerability and Community Resilience:</div>
-        {/* Implement the calculation thingy later */}
+        <div className="flex flex-col gap-2 w-full border mx-auto font-bold p-8">
+          <div className="text-orange-600 dark:text-orange-400">Expected Annual Loss</div>
+          <div className="flex items-center gap-4">
+            <div className="text-base">x</div>
+            <div className="text-base text-green-600 dark:text-green-400">Social Vulnerability</div>
+          </div>
+          <div className="flex items-center gap-4 border-b border-primary pb-4">
+            <div className="text-basee">÷</div>
+            <div className="text-base text-purple-600 dark:text-purple-400">Community Resilience</div>
+          </div>
+          <div className="flex items-center gap-4">
+            <div className="text-base">=</div>
+            <div className="text-base text-red-600 dark:text-red-400">Risk Index</div>
+          </div>
+        </div>
         <div>Risk Index scores are presented as a composite score for all 18 hazard types, as well as individual scores for each hazard type.</div>
-        <div>For more information, visit the National Risk Index website's <Link href="https://hazards.fema.gov/determining-risk" className="font-bold underline" target="_blank">Determining Risk</Link> page.</div>
+        <div>For more information, visit the National Risk Index website's <Link href="https://hazards.fema.gov/nri/determining-risk" className="font-bold underline" target="_blank">Determining Risk</Link> page.</div>
       </div>
     </>
   )
