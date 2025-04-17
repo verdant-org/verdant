@@ -78,7 +78,7 @@ export default function Page() {
 
 
   return (
-    <Suspense>
+    <Suspense fallback={<div className="flex justify-center items-center h-screen">Loading...</div>}>
       <APIProvider apiKey={key}>
           <div className="flex w-full">
             <div className="grow relative">
