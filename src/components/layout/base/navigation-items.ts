@@ -13,15 +13,15 @@ export const companyComponents: ComponentListProps[] = [
   },
   {
     title: "Opportunities",
-    href: "/#",
+    href: "/opportunities",
     description: "Find potential collaboration and partnernship opportunities with us"
   }
 ]
 
 export const resourceComponents: ComponentListProps[] = [
   {
-    title: "FAQ",
-    href: "/faq",
+    title: "Frequency Asked Questions",
+    href: "/frequently-asked-questions",
     description: "Search for frequently asked questions for our website"
   },
   {

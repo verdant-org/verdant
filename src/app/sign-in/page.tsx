@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 import { signIn } from "@/lib/auth-client";
 import Link from "next/link";
@@ -16,11 +16,18 @@ import { useRouter } from "next/navigation";
 function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false); // eslint-disable-line
+  const [loading, setLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const router = useRouter();
 
-  let callbackURL = window.localStorage.getItem("redirectUrl") || "/";
+  let callbackURL = "/"
+
+  useEffect(() => {
+    const url = window.localStorage.getItem("callbackURL")
+    if (url) {
+      callbackURL = url;
+    } 
+  })
 
   return (
     <Card className="max-w-md">
